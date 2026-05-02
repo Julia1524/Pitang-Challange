@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  EMPLOYEE
+  MANAGER
+  FINANCE
+  ADMIN
+}
+
+enum RequestStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  REJECTED
+  PAID
+  CANCELLED
+}
+
+enum HistoryAction {
+  CREATED
+  SUBMITTED
+  APPROVED
+  REJECTED
+  PAID
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(EMPLOYEE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requests       Request[] @relation("Requester")
+  historyRecords History[]
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requests Request[]
+}
+
+model Request {
+  id                     String        @id @default(cuid())
+  requesterId            String
+  categoryId             String
+  description            String
+  value                  Decimal       @db.Decimal(10, 2)
+  expenseDate            DateTime
+  status                 RequestStatus @default(DRAFT)
+  rejectionJustification String?
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+
+  requester   User       @relation("Requester", fields: [requesterId], references: [id])
+  category    Category   @relation(fields: [categoryId], references: [id])
+  attachments Attachment[]
+  history     History[]
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  requestId String
+  fileName  String
+  fileUrl   String
+  fileType  String
+  createdAt DateTime @default(now())
+
+  request Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+}
+
+model History {
+  id          String        @id @default(cuid())
+  requestId   String
+  userId      String
+  action      HistoryAction
+  observation String?
+  createdAt   DateTime      @default(now())
+
+  request Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+}

@@ -1,0 +1,13 @@
+{
+    "name": "javascript-intro",
+    "private": true,
+    "scripts": {
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    }
+}
