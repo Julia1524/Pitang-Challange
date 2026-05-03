@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import { errorResponse } from '../utils/error-response';
+import { errorResponse } from '../../utils/error-response';
 
 type UserRole = 'EMPLOYEE' | 'MANAGER' | 'FINANCE' | 'ADMIN';
 

@@ -1,13 +1,13 @@
 import jsonwebtoken from 'jsonwebtoken';
 
 import { environment } from '../../core/EnvVars';
-import { errorResponse } from '../utils/error-response';
+import { errorResponse } from '../../utils/error-response';
 
 import type { NextFunction, Request, Response } from 'express';
 
 const allowedPaths = {
     GET: ['/'],
-    POST: ['/login', '/users'],
+    POST: ['/auth/login', '/users'],
 } as const;
 
 function matchPath(path: string, pattern: string): boolean {

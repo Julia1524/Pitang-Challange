@@ -13,7 +13,7 @@ import {
 
 const userRouter = express.Router();
 
-userRouter.post('/login', login);
+userRouter.post('/auth/login', login);
 userRouter.get('/users', permissionsMiddleware('ADMIN'), getUsers);
 userRouter.get('/users/:id',permissionsMiddleware('ADMIN'),  getUser);
 userRouter.post('/users', postUser);

@@ -8,7 +8,7 @@ import { environment } from '../../core/EnvVars';
 import { logger } from '../../core/Logger';
 import { prisma } from '../../core/PrismaClient';
 import { userSchema } from '../../schemas';
-import { errorResponse } from '../utils/error-response';
+import { errorResponse } from '../../utils/error-response';
 
 import type { Request, Response } from 'express';
 

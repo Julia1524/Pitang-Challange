@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import { errorResponse } from '../utils/error-response';
+import { errorResponse } from '../../utils/error-response';
 
 export function isOwnerOrAdmin(request: Request, response: Response, next: NextFunction) {
     if (!request.loggedUser) {

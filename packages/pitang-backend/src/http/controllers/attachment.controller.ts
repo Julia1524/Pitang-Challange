@@ -1,7 +1,7 @@
 import z from 'zod';
 
 import { prisma } from '../../core/PrismaClient';
-import { errorResponse } from '../utils/error-response';
+import { errorResponse } from '../../utils/error-response';
 
 import type { Request, Response } from 'express';
 

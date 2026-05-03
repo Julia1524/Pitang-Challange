@@ -3,7 +3,7 @@ import z from 'zod';
 import { prisma } from '../../core/PrismaClient';
 import { createRequestSchema, rejectRequestSchema, paginationQuery } from '../../schemas';
 import { parseDate } from '../../utils/date';
-import { errorResponse } from '../utils/error-response';
+import { errorResponse } from '../../utils/error-response';
 
 import type { Request, Response } from 'express';
 
@@ -338,7 +338,7 @@ export async function getRequestHistory(request: Request, response: Response) {
         return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
-    const hasHistoryAccess = ['ADMIN', 'FINANCE'].includes(request.loggedUser!.role) || existing.requesterId === request.loggedUser!.id;
+    const hasHistoryAccess = ['ADMIN', 'MANAGER', 'FINANCE'].includes(request.loggedUser!.role) || existing.requesterId === request.loggedUser!.id;
 
     if (!hasHistoryAccess) {
         return errorResponse(response, 403, 'You do not have permission to view the history of this request');

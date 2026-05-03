@@ -4,7 +4,7 @@ import { prisma } from '../../core/PrismaClient';
 import { paginationQuery, categorySchema } from '../../schemas';
 
 import type { Request, Response } from 'express';
-import { errorResponse } from '../utils/error-response';
+import { errorResponse } from '../../utils/error-response';
 
 export async function getCategoryById(request: Request, response: Response) {
     const id = request.params.id as string;
