@@ -1,7 +1,6 @@
 import z from 'zod';
 
 import { prisma } from '../../core/PrismaClient';
-import { attachmentSchema } from '../../schemas';
 import { errorResponse } from '../utils/error-response';
 
 import type { Request, Response } from 'express';
@@ -39,18 +38,20 @@ export async function postAttachment(request: Request, response: Response) {
         return errorResponse(response, 403, 'You can only add attachments to your own requests');
     }
 
-    const { data, error } = attachmentSchema.safeParse(request.body);
+    const file = request.file;
 
-    if (error) {
-        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
+    if (!file) {
+        return errorResponse(response, 400, 'No file uploaded');
     }
+
+    const fileUrl = `/uploads/${file.filename}`;
 
     const attachment = await prisma.attachment.create({
         data: {
             requestId: id,
-            fileName: data.fileName,
-            fileUrl: data.fileUrl,
-            fileType: data.fileType,
+            fileName: file.originalname,
+            fileUrl,
+            fileType: file.mimetype,
         },
     });
 
@@ -67,6 +68,12 @@ export async function deleteAttachment(request: Request, response: Response) {
 
     if (!attachment) {
         return errorResponse(response, 404, 'Attachment not found');
+    }
+
+    const hasAccess = ['ADMIN'].includes(request.loggedUser!.role) || attachment.request.requesterId === request.loggedUser!.id;
+
+    if (!hasAccess) {
+        return errorResponse(response, 403, 'You do not have permission to delete this attachment');
     }
 
     await prisma.attachment.delete({ where: { id: attachmentId } });
