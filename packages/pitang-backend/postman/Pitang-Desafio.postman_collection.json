@@ -1,0 +1,685 @@
+{
+	"info": {
+		"_postman_id": "0250dd8a-c58c-4911-a255-e8ca50540fa2",
+		"name": "Pitang-Desafio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26304089",
+		"_collection_link": "https://red-trinity-576170.postman.co/workspace/New-Team-Workspace~dc38046b-f176-443d-a8f7-7a04c8fc9205/collection/26304089-0250dd8a-c58c-4911-a255-e8ca50540fa2?action=share&source=collection_link&creator=26304089"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "CATEGORY",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "CATEGORY",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb25pZ28yYzAwMDF1ZGV4bDVvdW84ZjIiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJHSUBleGVtcGxvLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWRBdCI6IjIwMjYtMDUtMDFUMjI6NTU6MTguOTk2WiIsInVwZGF0ZWRBdCI6IjIwMjYtMDUtMDFUMjI6NTU6MTguOTk2WiIsImlhdCI6MTc3NzY3NjEzNCwiZXhwIjoxNzc3Njc3OTM0fQ.x3NHjdWH_ilucEtNaG_NtYqZK8kXic4qMKtP53dh4CY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CATEGORYID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb25pZ28yYzAwMDF1ZGV4bDVvdW84ZjIiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJHSUBleGVtcGxvLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWRBdCI6IjIwMjYtMDUtMDFUMjI6NTU6MTguOTk2WiIsInVwZGF0ZWRBdCI6IjIwMjYtMDUtMDFUMjI6NTU6MTguOTk2WiIsImlhdCI6MTc3NzY3NjEzNCwiZXhwIjoxNzc3Njc3OTM0fQ.x3NHjdWH_ilucEtNaG_NtYqZK8kXic4qMKtP53dh4CY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/categories/cmonipd3d0003udexgua2h7xh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"categories",
+								"cmonipd3d0003udexgua2h7xh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb25pZ28yYzAwMDF1ZGV4bDVvdW84ZjIiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJHSUBleGVtcGxvLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWRBdCI6IjIwMjYtMDUtMDFUMjI6NTU6MTguOTk2WiIsInVwZGF0ZWRBdCI6IjIwMjYtMDUtMDFUMjI6NTU6MTguOTk2WiIsImlhdCI6MTc3NzY3NjEzNCwiZXhwIjoxNzc3Njc3OTM0fQ.x3NHjdWH_ilucEtNaG_NtYqZK8kXic4qMKtP53dh4CY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Carros\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/categories/cmonipg9k0004udexi3wf4iu3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"categories",
+								"cmonipg9k0004udexi3wf4iu3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reimbursements",
+			"item": [
+				{
+					"name": "REIMBURSEMENTS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb295NnVvbjAwMDA0dGV4Nm5pZzRqamQiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJ0YXNzaW9AZXhlbXBsby5jb20iLCJyb2xlIjoiRU1QTE9ZRUUiLCJjcmVhdGVkQXQiOiIyMDI2LTA1LTAyVDIzOjAzOjIxLjA0OFoiLCJ1cGRhdGVkQXQiOiIyMDI2LTA1LTAyVDIzOjAzOjIxLjA0OFoiLCJpYXQiOjE3Nzc3NjMwNzMsImV4cCI6MTc3Nzc2NDg3M30.zNmpGA70OJzxtkWfJkOzJUi18duDlT2LnTDkWnYs8PI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoryId\": \"cmoniow5l0001udex5wta2itj\",\n  \"description\": \"Almoço com cliente\",\n  \"value\": 85.50,\n  \"expenseDate\": \"2026-05-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/reimbursements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Nome do Usuário\",\n  \"email\": \"email@exemplo.com\",\n  \"password\": \"senha123\",\n  \"role\": \"EMPLOYEE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/reimbursements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-SUBMIT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb295NnVvbjAwMDA0dGV4Nm5pZzRqamQiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJ0YXNzaW9AZXhlbXBsby5jb20iLCJyb2xlIjoiRU1QTE9ZRUUiLCJjcmVhdGVkQXQiOiIyMDI2LTA1LTAyVDIzOjAzOjIxLjA0OFoiLCJ1cGRhdGVkQXQiOiIyMDI2LTA1LTAyVDIzOjAzOjIxLjA0OFoiLCJpYXQiOjE3Nzc3NjMwNzMsImV4cCI6MTc3Nzc2NDg3M30.zNmpGA70OJzxtkWfJkOzJUi18duDlT2LnTDkWnYs8PI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmooyebfb00014texutecp8lr/submit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmooyebfb00014texutecp8lr",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-CANCEL",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-APPROVE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb296ZGprbjAwMDA0dGV4ZDl2anhuc2UiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJ0YWxpdGFAZXhlbXBsby5jb20iLCJyb2xlIjoiTUFOQUdFUiIsImNyZWF0ZWRBdCI6IjIwMjYtMDUtMDJUMjM6MzY6MzIuODU1WiIsInVwZGF0ZWRBdCI6IjIwMjYtMDUtMDJUMjM6MzY6MzIuODU1WiIsImlhdCI6MTc3Nzc2NTAxMSwiZXhwIjoxNzc3NzY2ODExfQ.4C0P3NDk8-5ucvUYMEuP6NWwxs89vIi2mO_3o3QCdZw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmooyebfb00014texutecp8lr/approve",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmooyebfb00014texutecp8lr",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-REJECT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb296ZGprbjAwMDA0dGV4ZDl2anhuc2UiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJ0YWxpdGFAZXhlbXBsby5jb20iLCJyb2xlIjoiTUFOQUdFUiIsImNyZWF0ZWRBdCI6IjIwMjYtMDUtMDJUMjM6MzY6MzIuODU1WiIsInVwZGF0ZWRBdCI6IjIwMjYtMDUtMDJUMjM6MzY6MzIuODU1WiIsImlhdCI6MTc3Nzc2NTAxMSwiZXhwIjoxNzc3NzY2ODExfQ.4C0P3NDk8-5ucvUYMEuP6NWwxs89vIi2mO_3o3QCdZw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmooyebfb00014texutecp8lr/reject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmooyebfb00014texutecp8lr",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-HISTORY",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb3BubzRkdDAwMDJ6bGV4ZGs0MmdtN2wiLCJuYW1lIjoiRmluYW5jZSBVc2VyIiwiZW1haWwiOiJmaW5hbmNlQHBpdGFuZy5jb20iLCJyb2xlIjoiRklOQU5DRSIsImNyZWF0ZWRBdCI6IjIwMjYtMDUtMDNUMTA6NTY6MzcuMTY5WiIsInVwZGF0ZWRBdCI6IjIwMjYtMDUtMDNUMTA6NTY6MzcuMTY5WiIsImlhdCI6MTc3NzgwODA3OCwiZXhwIjoxNzc3ODA5ODc4fQ.gm8ioABNHYkQBHw8544SQwZYkz2CGTbrn6oRup0Xr6c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmopougo40000qoex7mxb5vqv/history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmopougo40000qoex7mxb5vqv",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-PAY",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "cmooyebfb00014texutecp8lr",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmooyf6nm00034texbois7m46/reject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmooyf6nm00034texbois7m46",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-PUT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "cmooyebfb00014texutecp8lr",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmooyf6nm00034texbois7m46/reject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmooyf6nm00034texbois7m46",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attachments",
+			"item": [
+				{
+					"name": "ATTACHMENTS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb3AxNXIydTAwMDA4a2V4aWhrZjh1cHQiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJqdUBleGVtcGxvLmNvbSIsInJvbGUiOiJFTVBMT1lFRSIsImNyZWF0ZWRBdCI6IjIwMjYtMDUtMDNUMDA6MjY6MjguNTY3WiIsInVwZGF0ZWRBdCI6IjIwMjYtMDUtMDNUMDA6MjY6MjguNTY3WiIsImlhdCI6MTc3Nzc3Njc4OSwiZXhwIjoxNzc3Nzc4NTg5fQ.LDMElmEiQ2E0nCUJtDJtf_pcu46Vn9a7E_G3cO6MVYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/ness/Imagens/Capturas de tela/Captura de tela de 2026-04-30 16-30-08.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmop1brob00078kex3005qdt6/attachments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmop1brob00078kex3005qdt6",
+								"attachments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ATTACHMENTS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb295NnVvbjAwMDA0dGV4Nm5pZzRqamQiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJ0YXNzaW9AZXhlbXBsby5jb20iLCJyb2xlIjoiRU1QTE9ZRUUiLCJjcmVhdGVkQXQiOiIyMDI2LTA1LTAyVDIzOjAzOjIxLjA0OFoiLCJ1cGRhdGVkQXQiOiIyMDI2LTA1LTAyVDIzOjAzOjIxLjA0OFoiLCJpYXQiOjE3Nzc3NjMwNzMsImV4cCI6MTc3Nzc2NDg3M30.zNmpGA70OJzxtkWfJkOzJUi18duDlT2LnTDkWnYs8PI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoryId\": \"cmoniow5l0001udex5wta2itj\",\n  \"description\": \"Almoço com cliente\",\n  \"value\": 85.50,\n  \"expenseDate\": \"2026-05-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/reimbursements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ATTACHMENTS-DELETE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb3AxNXIydTAwMDA4a2V4aWhrZjh1cHQiLCJuYW1lIjoiZmVsaXBlIiwiZW1haWwiOiJqdUBleGVtcGxvLmNvbSIsInJvbGUiOiJFTVBMT1lFRSIsImNyZWF0ZWRBdCI6IjIwMjYtMDUtMDNUMDA6MjY6MjguNTY3WiIsInVwZGF0ZWRBdCI6IjIwMjYtMDUtMDNUMDA6MjY6MjguNTY3WiIsImlhdCI6MTc3Nzc3NDk1NywiZXhwIjoxNzc3Nzc2NzU3fQ.CHeI_Egm8HqPULwrBlU_726oKrnnWnF_BzqMHTJDUr4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoryId\": \"cmoniow5l0001udex5wta2itj\",\n  \"description\": \"Almoço com cliente\",\n  \"value\": 85.50,\n  \"expenseDate\": \"2026-05-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmop1brob00078kex3005qdt6/attachments/cmop5iw6z0001gyexh8i1a4xr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmop1brob00078kex3005qdt6",
+								"attachments",
+								"cmop5iw6z0001gyexh8i1a4xr"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "USER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Nome do Usuário\",\n  \"email\": \"email@exemplo.com\",\n  \"password\": \"senha123\",\n  \"role\": \"EMPLOYEE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"email\": \"admin@pitang.com\",\n    \"password\":\"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USERS",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "USERSID",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb245OHgxYTAwMDFoYmV4YzRkZHNxanoiLCJuYW1lIjoiSnVsaWEiLCJlbWFpbCI6Imp1bGlhQGV4ZW1wbG8uY29tIiwicm9sZSI6Ik1BTkFHRVIiLCJjcmVhdGVkQXQiOiIyMDI2LTA1LTAxVDE4OjM3OjIwLjgzMFoiLCJ1cGRhdGVkQXQiOiIyMDI2LTA1LTAxVDE4OjM3OjIwLjgzMFoiLCJpYXQiOjE3Nzc2NjEyNTEsImV4cCI6MTc3NzY2MzA1MX0.oZaHV5DDbVkPnmtMXkwvyL0wtAllkcbxwen9bko9NAw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n     \"email\": \"TESTE@exemplo.com\",\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/users/cmon98x1a0001hbexc4ddsqjz",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"users",
+						"cmon98x1a0001hbexc4ddsqjz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtb245OHgxYTAwMDFoYmV4YzRkZHNxanoiLCJuYW1lIjoiSnVsaWEiLCJlbWFpbCI6Imp1bGlhQGV4ZW1wbG8uY29tIiwicm9sZSI6Ik1BTkFHRVIiLCJjcmVhdGVkQXQiOiIyMDI2LTA1LTAxVDE4OjM3OjIwLjgzMFoiLCJ1cGRhdGVkQXQiOiIyMDI2LTA1LTAxVDE4OjM3OjIwLjgzMFoiLCJpYXQiOjE3Nzc2NjEyNTEsImV4cCI6MTc3NzY2MzA1MX0.oZaHV5DDbVkPnmtMXkwvyL0wtAllkcbxwen9bko9NAw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/users/cmon98x1a0001hbexc4ddsqjz",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"users",
+						"cmon98x1a0001hbexc4ddsqjz"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
