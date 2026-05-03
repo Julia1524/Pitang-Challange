@@ -24,7 +24,7 @@ export async function postUser(request: Request, response: Response) {
     const { data, error } = userSchema.safeParse(request.body);
 
     if (error) {
-        return errorResponse(response, 400, 'Campos inválidos', z.treeifyError(error).properties);
+        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
     let user = await prisma.user.findUnique({ where: { email: data.email } });
@@ -32,7 +32,7 @@ export async function postUser(request: Request, response: Response) {
     if (user) {
         logger.error({ emailAddress: data.email }, 'User already registered');
 
-        return errorResponse(response, 409, 'Usuário já registrado');
+        return errorResponse(response, 409, 'User already registered');
     }
 
     const salt = bcrypt.genSaltSync(10);
@@ -61,7 +61,7 @@ export async function getUser(request: Request, response: Response) {
     });
 
     if (!user) {
-        return errorResponse(response, 404, 'Usuário não encontrado');
+        return errorResponse(response, 404, 'User not found');
     }
 
     response.json(user);
@@ -81,7 +81,7 @@ export async function patchUser(request: Request, response: Response) {
 
         response.json(user);
     } catch {
-        errorResponse(response, 404, 'Usuário não encontrado');
+        errorResponse(response, 404, 'User not found');
     }
 }
 
@@ -91,7 +91,7 @@ export async function deleteUser(request: Request, response: Response) {
 
         response.status(204).send();
     } catch {
-        errorResponse(response, 404, 'Usuário não encontrado');
+        errorResponse(response, 404, 'User not found');
     }
 }
 
@@ -99,13 +99,13 @@ export async function login(request: Request, response: Response) {
     const { email, password } = request.body;
 
     if (!email || !password) {
-        return errorResponse(response, 400, 'Credenciais inválidas');
+        return errorResponse(response, 400, 'Invalid credentials');
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-        return errorResponse(response, 400, 'Usuário não encontrado');
+        return errorResponse(response, 400, 'User not found');
     }
 
     if (bcrypt.compareSync(password, user.password)) {
@@ -118,5 +118,5 @@ export async function login(request: Request, response: Response) {
         });
     }
 
-    errorResponse(response, 400, 'Senha inválida');
+    errorResponse(response, 400, 'Invalid password');
 }

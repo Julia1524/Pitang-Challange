@@ -4,7 +4,7 @@ import { errorResponse } from '../utils/error-response';
 
 export function isOwnerOrAdmin(request: Request, response: Response, next: NextFunction) {
     if (!request.loggedUser) {
-        return errorResponse(response, 401, 'Usuário não autenticado');
+        return errorResponse(response, 401, 'User not authenticated');
     }
 
     if (request.loggedUser.role === 'ADMIN') {
@@ -15,5 +15,5 @@ export function isOwnerOrAdmin(request: Request, response: Response, next: NextF
         return next();
     }
 
-    return errorResponse(response, 403, 'Você só pode editar seu próprio perfil');
+    return errorResponse(response, 403, 'You can only edit your own profile');
 }

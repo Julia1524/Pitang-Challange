@@ -30,6 +30,7 @@ enum RequestStatus {
 
 enum HistoryAction {
   CREATED
+  UPDATED
   SUBMITTED
   APPROVED
   REJECTED

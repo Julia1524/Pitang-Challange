@@ -36,7 +36,7 @@ export function authMiddleware(
     } = request;
 
     if (!authorization) {
-        return errorResponse(response, 401, 'Usuário não autenticado');
+        return errorResponse(response, 401, 'User not authenticated');
     }
 
     const [, token = ''] = authorization.split(' ');
@@ -46,6 +46,6 @@ export function authMiddleware(
 
         next();
     } catch {
-        errorResponse(response, 401, 'Token inválido ou expirado');
+        errorResponse(response, 401, 'Invalid or expired token');
     }
 }

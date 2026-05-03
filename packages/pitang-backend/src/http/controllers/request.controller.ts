@@ -7,21 +7,14 @@ import { errorResponse } from '../utils/error-response';
 
 import type { Request, Response } from 'express';
 
-const allowedTransitions: Record<string, string[]> = {
-    DRAFT: ['SUBMITTED', 'CANCELLED'],
-    SUBMITTED: ['APPROVED', 'REJECTED'],
-    APPROVED: ['PAID'],
-    REJECTED: [],
-    PAID: [],
-    CANCELLED: [],
-};
-
 export async function getReimbursements(request: Request, response: Response) {
     const { data: pagination, error } = paginationQuery.safeParse(request.query);
 
     if (error) {
-        return errorResponse(response, 400, 'Campos inválidos', z.treeifyError(error).properties);
+        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
+
+    const isAdminOrFinance = ['ADMIN', 'FINANCE'].includes(request.loggedUser!.role);
 
     const [totalCount, requests] = await Promise.all([
         prisma.request.count(),
@@ -33,8 +26,15 @@ export async function getReimbursements(request: Request, response: Response) {
         }),
     ]);
 
+    const filtered = requests.map((req) => {
+        if (!isAdminOrFinance && req.requesterId !== request.loggedUser!.id) {
+            req.history = [];
+        }
+        return req;
+    });
+
     response.json({
-        items: requests,
+        items: filtered,
         lastPage: Math.ceil(totalCount / pagination.pageSize) === pagination.page,
         page: pagination.page,
         pageSize: pagination.pageSize,
@@ -51,7 +51,13 @@ export async function getRequestById(request: Request, response: Response) {
     });
 
     if (!req) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
+    }
+
+    const hasHistoryAccess = ['ADMIN', 'FINANCE', 'MANAGER'].includes(request.loggedUser!.role) || req.requesterId === request.loggedUser!.id;
+
+    if (!hasHistoryAccess) {
+        req.history = [];
     }
 
     response.json(req);
@@ -61,17 +67,17 @@ export async function postRequest(request: Request, response: Response) {
     const { data, error } = createRequestSchema.safeParse(request.body);
 
     if (error) {
-        return errorResponse(response, 400, 'Campos inválidos', z.treeifyError(error).properties);
+        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
     const category = await prisma.category.findUnique({ where: { id: data.categoryId } });
 
     if (!category) {
-        return errorResponse(response, 400, 'Categoria não encontrada');
+        return errorResponse(response, 400, 'Category not found');
     }
 
     if (!category.active) {
-        return errorResponse(response, 400, 'Categoria inativa não pode ser usada');
+        return errorResponse(response, 400, 'Inactive category cannot be used');
     }
 
     const created = await prisma.request.create({
@@ -90,6 +96,8 @@ export async function postRequest(request: Request, response: Response) {
             requestId: created.id,
             userId: request.loggedUser!.id,
             action: 'CREATED',
+            createdAt: new Date(),
+            observation: 'Reimbursement request created as draft',
         },
     });
 
@@ -102,32 +110,32 @@ export async function patchRequest(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
     if (existing.requesterId !== request.loggedUser!.id) {
-        return errorResponse(response, 403, 'Você só pode editar suas próprias solicitações');
+        return errorResponse(response, 403, 'You can only edit your own reimbursement requests');
     }
 
     if (existing.status !== 'DRAFT') {
-        return errorResponse(response, 400, 'Só é possível editar solicitações em RASCUNHO');
+        return errorResponse(response, 400, 'You can only edit reimbursement requests in draft status');
     }
 
     const { data, error } = createRequestSchema.partial().safeParse(request.body);
 
     if (error) {
-        return errorResponse(response, 400, 'Campos inválidos', z.treeifyError(error).properties);
+        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
     if (data.categoryId) {
         const category = await prisma.category.findUnique({ where: { id: data.categoryId } });
 
         if (!category) {
-            return errorResponse(response, 400, 'Categoria não encontrada');
+            return errorResponse(response, 400, 'Category not found');
         }
 
         if (!category.active) {
-            return errorResponse(response, 400, 'Categoria inativa não pode ser usada');
+            return errorResponse(response, 400, 'Inactive category cannot be used');
         }
     }
 
@@ -136,6 +144,16 @@ export async function patchRequest(request: Request, response: Response) {
         data: {
             ...data,
             expenseDate: data.expenseDate ? parseDate(data.expenseDate) : undefined,
+        },
+    });
+
+    await prisma.history.create({
+        data: {
+            requestId: id,
+            userId: request.loggedUser!.id,
+            action: 'UPDATED',
+            createdAt: new Date(),
+            observation: 'Reimbursement request updated',
         },
     });
 
@@ -148,15 +166,15 @@ export async function submitRequest(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
     if (existing.requesterId !== request.loggedUser!.id) {
-        return errorResponse(response, 403, 'Você só pode enviar suas próprias solicitações');
+        return errorResponse(response, 403, 'You can only submit your own reimbursement requests');
     }
 
     if (existing.status !== 'DRAFT') {
-        return errorResponse(response, 400, 'Transição de status inválida');
+        return errorResponse(response, 400, 'Invalid status transition');
     }
 
     const updated = await prisma.request.update({
@@ -169,6 +187,8 @@ export async function submitRequest(request: Request, response: Response) {
             requestId: id,
             userId: request.loggedUser!.id,
             action: 'SUBMITTED',
+            createdAt: new Date(),
+            observation: 'Reimbursement request submitted for review',
         },
     });
 
@@ -181,11 +201,11 @@ export async function approveRequest(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
     if (existing.status !== 'SUBMITTED') {
-        return errorResponse(response, 400, 'Transição de status inválida');
+        return errorResponse(response, 400, 'Invalid status transition');
     }
 
     const updated = await prisma.request.update({
@@ -198,6 +218,8 @@ export async function approveRequest(request: Request, response: Response) {
             requestId: id,
             userId: request.loggedUser!.id,
             action: 'APPROVED',
+            createdAt: new Date(),
+            observation: 'Reimbursement request approved by manager',
         },
     });
 
@@ -210,17 +232,17 @@ export async function rejectRequest(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
     if (existing.status !== 'SUBMITTED') {
-        return errorResponse(response, 400, 'Transição de status inválida');
+        return errorResponse(response, 400, 'Invalid status transition');
     }
 
     const { data, error } = rejectRequestSchema.safeParse(request.body);
 
     if (error) {
-        return errorResponse(response, 400, 'Justificativa de rejeição é obrigatória');
+        return errorResponse(response, 400, 'Rejection justification is required');
     }
 
     const updated = await prisma.request.update({
@@ -233,6 +255,7 @@ export async function rejectRequest(request: Request, response: Response) {
             requestId: id,
             userId: request.loggedUser!.id,
             action: 'REJECTED',
+            createdAt: new Date(),
             observation: data.rejectionJustification,
         },
     });
@@ -246,11 +269,11 @@ export async function markAsPaid(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
     if (existing.status !== 'APPROVED') {
-        return errorResponse(response, 400, 'Transição de status inválida');
+        return errorResponse(response, 400, 'Invalid status transition');
     }
 
     const updated = await prisma.request.update({
@@ -263,6 +286,8 @@ export async function markAsPaid(request: Request, response: Response) {
             requestId: id,
             userId: request.loggedUser!.id,
             action: 'PAID',
+            createdAt: new Date(),
+            observation: 'Reimbursement request marked as paid by finance',
         },
     });
 
@@ -275,15 +300,15 @@ export async function cancelRequest(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
     if (existing.requesterId !== request.loggedUser!.id) {
-        return errorResponse(response, 403, 'Você só pode cancelar suas próprias solicitações');
+        return errorResponse(response, 403, 'You can only cancel your own reimbursement requests');
     }
 
     if (existing.status !== 'DRAFT') {
-        return errorResponse(response, 400, 'Transição de status inválida');
+        return errorResponse(response, 400, 'Invalid status transition');
     }
 
     const updated = await prisma.request.update({
@@ -296,6 +321,8 @@ export async function cancelRequest(request: Request, response: Response) {
             requestId: id,
             userId: request.loggedUser!.id,
             action: 'CANCELLED',
+            createdAt: new Date(),
+            observation: 'Reimbursement request cancelled by requester',
         },
     });
 
@@ -308,7 +335,13 @@ export async function getRequestHistory(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
+    }
+
+    const hasHistoryAccess = ['ADMIN', 'FINANCE'].includes(request.loggedUser!.role) || existing.requesterId === request.loggedUser!.id;
+
+    if (!hasHistoryAccess) {
+        return errorResponse(response, 403, 'You do not have permission to view the history of this request');
     }
 
     const history = await prisma.history.findMany({

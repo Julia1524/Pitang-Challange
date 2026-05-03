@@ -8,19 +8,19 @@ export const userSchema = z.object({
 });
 
 export const categorySchema = z.object({
-    name: z.string().min(1, "Nome é obrigatório"),
+    name: z.string().min(1, "Name is required"),
     active: z.coerce.boolean().default(true),
 });
 
 export const createRequestSchema = z.object({
-    categoryId: z.string().min(1, "Categoria é obrigatória"),
-    description: z.string().min(1, "Descrição é obrigatória"),
-    value: z.coerce.number().positive("Valor deve ser maior que zero"),
-    expenseDate: z.string().min(1, "Data da despesa é obrigatória"),
+    categoryId: z.string().min(1, "Category is required"),
+    description: z.string().min(1, "Description is required"),
+    value: z.coerce.number().positive("Value must be greater than zero"),
+    expenseDate: z.string().min(1, "Expense date is required"),
 });
 
 export const rejectRequestSchema = z.object({
-    rejectionJustification: z.string().min(1, "Justificativa é obrigatória"),
+    rejectionJustification: z.string().min(1, "Justification is required"),
 });
 
 export const attachmentSchema = z.object({

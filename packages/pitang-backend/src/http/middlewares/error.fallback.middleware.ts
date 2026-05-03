@@ -12,7 +12,7 @@ export function errorFallbackMiddleware(
     logger.error(error);
 
     const body: Record<string, unknown> = {
-        message: 'Erro inesperado no servidor',
+        message: 'Unexpected server error',
         statusCode: 500,
         error: 'Internal Server Error',
     };

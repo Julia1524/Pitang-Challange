@@ -14,7 +14,7 @@ export async function getCategoryById(request: Request, response: Response) {
         });
     
         if (!category) {
-            return errorResponse(response, 404, 'Categoria não encontrada');
+            return errorResponse(response, 404, 'Category not found');
         }
     
         response.json(category);
@@ -26,7 +26,7 @@ export async function getCategory(request: Request, response: Response) {
     );
 
     if (error) {
-        return response.status(400).json(z.treeifyError(error).properties);
+        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
     const [totalCount, categories] = await Promise.all([
@@ -52,7 +52,7 @@ export async function postCategory(request: Request, response: Response) {
     const { data, error } = categorySchema.safeParse(request.body);
 
     if (error) {
-        return response.status(400).json(error);
+        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
     let category = await prisma.category.findUnique({
@@ -78,18 +78,20 @@ export async function patchCategory(request: Request, response: Response) {
     const { data, error } = categorySchema.partial().safeParse(request.body);
 
     if (error) {
-        return response.status(400).json(error);
+        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
-    let category = await prisma.category.findUnique({
-        where: { name: data.name },
-    });
-    
-    if (category) {
-        return errorResponse(response, 409, 'Category already exists');
+    if (data.name) {
+        const existingCategory = await prisma.category.findUnique({
+            where: { name: data.name },
+        });
+
+        if (existingCategory && existingCategory.id !== id) {
+            return errorResponse(response, 409, 'Category already exists');
+        }
     }
 
-    category = await prisma.category.update({
+    const category = await prisma.category.update({
         where: { id },
         data: {
             ...data,

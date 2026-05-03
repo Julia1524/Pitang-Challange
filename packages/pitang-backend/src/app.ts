@@ -11,6 +11,7 @@ import { errorFallbackMiddleware } from './http/middlewares/error.fallback.middl
 import categoryRouter from './http/routes/category.route';
 import reimbursementRouter from './http/routes/request.route';
 import userRouter from './http/routes/user.route';
+import attachmentRouter from './http/routes/attachment.route';
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(authMiddleware);
 app.use('/', userRouter);
 app.use('/', categoryRouter);
 app.use('/', reimbursementRouter);
+app.use('/', attachmentRouter)
 
 app.use(errorFallbackMiddleware);
 

@@ -12,7 +12,13 @@ export async function getAttachments(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
+    }
+
+    const hasAccess = ['ADMIN', 'MANAGER', 'FINANCE'].includes(request.loggedUser!.role) || existing.requesterId === request.loggedUser!.id;
+
+    if (!hasAccess) {
+        return errorResponse(response, 403, 'You do not have permission to view attachments for this request');
     }
 
     const attachments = await prisma.attachment.findMany({ where: { requestId: id } });
@@ -26,17 +32,17 @@ export async function postAttachment(request: Request, response: Response) {
     const existing = await prisma.request.findUnique({ where: { id } });
 
     if (!existing) {
-        return errorResponse(response, 404, 'Solicitação não encontrada');
+        return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
     if (existing.requesterId !== request.loggedUser!.id) {
-        return errorResponse(response, 403, 'Você só pode adicionar anexos às suas próprias solicitações');
+        return errorResponse(response, 403, 'You can only add attachments to your own requests');
     }
 
     const { data, error } = attachmentSchema.safeParse(request.body);
 
     if (error) {
-        return errorResponse(response, 400, 'Campos inválidos', z.treeifyError(error).properties);
+        return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
     const attachment = await prisma.attachment.create({
@@ -60,14 +66,11 @@ export async function deleteAttachment(request: Request, response: Response) {
     });
 
     if (!attachment) {
-        return errorResponse(response, 404, 'Anexo não encontrado');
-    }
-
-    if (attachment.request.requesterId !== request.loggedUser!.id) {
-        return errorResponse(response, 403, 'Você só pode remover anexos das suas próprias solicitações');
+        return errorResponse(response, 404, 'Attachment not found');
     }
 
     await prisma.attachment.delete({ where: { id: attachmentId } });
 
     response.status(204).send();
 }
+
