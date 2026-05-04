@@ -10,15 +10,8 @@ const passwordSchema = z
     });
 
 export const loginSchema = z.object({
+    email: z.string().email('Invalid email format'),
     password: z.string(),
-    username: z
-        .string()
-        .min(6, { message: 'Username must be at least 6 char longs' })
-        .max(20, { message: 'Username cannot exceed 20 characters' })
-        .regex(
-            /^[a-z0-9]{6,20}$/,
-            'Username must not contain special characters or uppercase letters',
-        ),
 });
 
 export const registerSchema = loginSchema
@@ -39,12 +32,5 @@ export const registerSchema = loginSchema
         }
     });
 
-export const postSchema = z.object({
-    body: z.string().min(3).max(1000),
-    tags: z.array(z.string()).min(1, 'At least one tag is required'),
-    title: z.string().min(3),
-});
-
 export type LoginSchema = z.infer<typeof loginSchema>;
-export type PostSchema = z.infer<typeof postSchema>;
 export type RegisterSchema = z.infer<typeof registerSchema>;

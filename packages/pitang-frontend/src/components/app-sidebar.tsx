@@ -1,5 +1,4 @@
 import {
-    FrameIcon,
     MapIcon,
     PackageIcon,
     PieChartIcon,
@@ -40,11 +39,6 @@ const data = {
             icon: <MapIcon />,
             name: 'Users',
             url: '/dashboard/users',
-        },
-        {
-            icon: <FrameIcon />,
-            name: 'Posts',
-            url: '/dashboard/posts',
         },
     ],
 };

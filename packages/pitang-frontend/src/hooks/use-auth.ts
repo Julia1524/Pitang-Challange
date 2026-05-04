@@ -1,3 +1,4 @@
+import { mutate } from 'swr';
 import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
@@ -6,7 +7,7 @@ import FetcherError from '@/lib/FetcherError';
 
 import type { LoginSchema } from '@/zodSchemas';
 
-function getCookie(cookieName: string) {
+export function getCookie(cookieName: string) {
     return document.cookie
         .split('; ')
         .find((c) => c.startsWith(`${cookieName}=`))
@@ -17,30 +18,34 @@ export function useAuth() {
     const navigate = useNavigate();
 
     async function getAuthenticatedUser() {
+        const token = getCookie('@pitang/accessToken');
+        if (!token) return null;
+
         return fetcher('/auth/me', {
             headers: {
-                Authorization: `Bearer ${getCookie('@pitang/accessToken')}`,
+                Authorization: `Bearer ${token}`,
             },
         });
     }
 
     async function handleLogout() {
         document.cookie = '@pitang/accessToken=; path=/; Max-Age=0';
-
+        mutate('/auth/me', null);
         navigate({ to: '/login' });
     }
 
     async function handleLogin(data: LoginSchema) {
         try {
             const response = await fetcher.post('/auth/login', {
-                expiresInMins: 90,
+                email: data.email,
                 password: data.password,
-                username: data.username,
             });
 
             toast.success('Welcome...');
 
-            document.cookie = `@pitang/accessToken=${response.accessToken}; path=/; Max-Age=86400`;
+            document.cookie = `@pitang/accessToken=${response.token}; path=/; Max-Age=86400`;
+            
+            mutate('/auth/me');
 
             navigate({ to: '/dashboard' });
         } catch (error) {

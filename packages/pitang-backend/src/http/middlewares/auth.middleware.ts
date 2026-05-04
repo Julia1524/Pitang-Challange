@@ -7,7 +7,7 @@ import type { NextFunction, Request, Response } from 'express';
 
 const allowedPaths = {
     GET: ['/'],
-    POST: ['/auth/login', '/users'],
+    POST: ['/auth/login', '/users', ],
 } as const;
 
 function matchPath(path: string, pattern: string): boolean {

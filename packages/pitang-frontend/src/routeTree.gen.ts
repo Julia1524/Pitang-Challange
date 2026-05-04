@@ -18,11 +18,6 @@ import { Route as ProductIdRouteImport } from './routes/product/$id'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as DashboardProductsIndexRouteImport } from './routes/dashboard/products/index'
-import { Route as DashboardPostsIndexRouteImport } from './routes/dashboard/posts/index'
-import { Route as DashboardPostsNewRouteImport } from './routes/dashboard/posts/new'
-import { Route as DashboardPostsIdRouteRouteImport } from './routes/dashboard/posts/$id/route'
-import { Route as DashboardPostsIdIndexRouteImport } from './routes/dashboard/posts/$id/index'
-import { Route as DashboardPostsIdEditRouteImport } from './routes/dashboard/posts/$id/edit'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/About',
@@ -68,31 +63,6 @@ const DashboardProductsIndexRoute = DashboardProductsIndexRouteImport.update({
   path: '/products/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardPostsIndexRoute = DashboardPostsIndexRouteImport.update({
-  id: '/posts/',
-  path: '/posts/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardPostsNewRoute = DashboardPostsNewRouteImport.update({
-  id: '/posts/new',
-  path: '/posts/new',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardPostsIdRouteRoute = DashboardPostsIdRouteRouteImport.update({
-  id: '/posts/$id',
-  path: '/posts/$id',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardPostsIdIndexRoute = DashboardPostsIdIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardPostsIdRouteRoute,
-} as any)
-const DashboardPostsIdEditRoute = DashboardPostsIdEditRouteImport.update({
-  id: '/edit',
-  path: '/edit',
-  getParentRoute: () => DashboardPostsIdRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -102,12 +72,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof AuthRegisterRoute
   '/product/$id': typeof ProductIdRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/posts/$id': typeof DashboardPostsIdRouteRouteWithChildren
-  '/dashboard/posts/new': typeof DashboardPostsNewRoute
-  '/dashboard/posts/': typeof DashboardPostsIndexRoute
   '/dashboard/products/': typeof DashboardProductsIndexRoute
-  '/dashboard/posts/$id/edit': typeof DashboardPostsIdEditRoute
-  '/dashboard/posts/$id/': typeof DashboardPostsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -116,11 +81,7 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterRoute
   '/product/$id': typeof ProductIdRoute
   '/dashboard': typeof DashboardIndexRoute
-  '/dashboard/posts/new': typeof DashboardPostsNewRoute
-  '/dashboard/posts': typeof DashboardPostsIndexRoute
   '/dashboard/products': typeof DashboardProductsIndexRoute
-  '/dashboard/posts/$id/edit': typeof DashboardPostsIdEditRoute
-  '/dashboard/posts/$id': typeof DashboardPostsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -132,12 +93,7 @@ export interface FileRoutesById {
   '/_auth/register': typeof AuthRegisterRoute
   '/product/$id': typeof ProductIdRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/posts/$id': typeof DashboardPostsIdRouteRouteWithChildren
-  '/dashboard/posts/new': typeof DashboardPostsNewRoute
-  '/dashboard/posts/': typeof DashboardPostsIndexRoute
   '/dashboard/products/': typeof DashboardProductsIndexRoute
-  '/dashboard/posts/$id/edit': typeof DashboardPostsIdEditRoute
-  '/dashboard/posts/$id/': typeof DashboardPostsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -149,12 +105,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/product/$id'
     | '/dashboard/'
-    | '/dashboard/posts/$id'
-    | '/dashboard/posts/new'
-    | '/dashboard/posts/'
     | '/dashboard/products/'
-    | '/dashboard/posts/$id/edit'
-    | '/dashboard/posts/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -163,11 +114,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/product/$id'
     | '/dashboard'
-    | '/dashboard/posts/new'
-    | '/dashboard/posts'
     | '/dashboard/products'
-    | '/dashboard/posts/$id/edit'
-    | '/dashboard/posts/$id'
   id:
     | '__root__'
     | '/'
@@ -178,12 +125,7 @@ export interface FileRouteTypes {
     | '/_auth/register'
     | '/product/$id'
     | '/dashboard/'
-    | '/dashboard/posts/$id'
-    | '/dashboard/posts/new'
-    | '/dashboard/posts/'
     | '/dashboard/products/'
-    | '/dashboard/posts/$id/edit'
-    | '/dashboard/posts/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -259,41 +201,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProductsIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/posts/': {
-      id: '/dashboard/posts/'
-      path: '/posts'
-      fullPath: '/dashboard/posts/'
-      preLoaderRoute: typeof DashboardPostsIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/posts/new': {
-      id: '/dashboard/posts/new'
-      path: '/posts/new'
-      fullPath: '/dashboard/posts/new'
-      preLoaderRoute: typeof DashboardPostsNewRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/posts/$id': {
-      id: '/dashboard/posts/$id'
-      path: '/posts/$id'
-      fullPath: '/dashboard/posts/$id'
-      preLoaderRoute: typeof DashboardPostsIdRouteRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/posts/$id/': {
-      id: '/dashboard/posts/$id/'
-      path: '/'
-      fullPath: '/dashboard/posts/$id/'
-      preLoaderRoute: typeof DashboardPostsIdIndexRouteImport
-      parentRoute: typeof DashboardPostsIdRouteRoute
-    }
-    '/dashboard/posts/$id/edit': {
-      id: '/dashboard/posts/$id/edit'
-      path: '/edit'
-      fullPath: '/dashboard/posts/$id/edit'
-      preLoaderRoute: typeof DashboardPostsIdEditRouteImport
-      parentRoute: typeof DashboardPostsIdRouteRoute
-    }
   }
 }
 
@@ -311,34 +218,13 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
-interface DashboardPostsIdRouteRouteChildren {
-  DashboardPostsIdEditRoute: typeof DashboardPostsIdEditRoute
-  DashboardPostsIdIndexRoute: typeof DashboardPostsIdIndexRoute
-}
-
-const DashboardPostsIdRouteRouteChildren: DashboardPostsIdRouteRouteChildren = {
-  DashboardPostsIdEditRoute: DashboardPostsIdEditRoute,
-  DashboardPostsIdIndexRoute: DashboardPostsIdIndexRoute,
-}
-
-const DashboardPostsIdRouteRouteWithChildren =
-  DashboardPostsIdRouteRoute._addFileChildren(
-    DashboardPostsIdRouteRouteChildren,
-  )
-
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardPostsIdRouteRoute: typeof DashboardPostsIdRouteRouteWithChildren
-  DashboardPostsNewRoute: typeof DashboardPostsNewRoute
-  DashboardPostsIndexRoute: typeof DashboardPostsIndexRoute
   DashboardProductsIndexRoute: typeof DashboardProductsIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
-  DashboardPostsIdRouteRoute: DashboardPostsIdRouteRouteWithChildren,
-  DashboardPostsNewRoute: DashboardPostsNewRoute,
-  DashboardPostsIndexRoute: DashboardPostsIndexRoute,
   DashboardProductsIndexRoute: DashboardProductsIndexRoute,
 }
 

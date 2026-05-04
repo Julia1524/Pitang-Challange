@@ -95,6 +95,7 @@ export async function deleteUser(request: Request, response: Response) {
     }
 }
 
+
 export async function login(request: Request, response: Response) {
     const { email, password } = request.body;
 

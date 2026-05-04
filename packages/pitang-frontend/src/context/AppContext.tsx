@@ -1,7 +1,7 @@
 import { createContext, type PropsWithChildren, useReducer } from 'react';
 import useSWR from 'swr';
 
-import { useAuth } from '@/hooks/use-auth';
+import { getCookie, useAuth } from '@/hooks/use-auth';
 
 import type { LoggedUser } from '@/types';
 
@@ -41,11 +41,18 @@ export const AppContext = createContext<AppContext>(defaultContext);
 export default function AppContextProvider({ children }: PropsWithChildren) {
     const [state, dispatch] = useReducer(appReducer, initialState);
     const { getAuthenticatedUser } = useAuth();
+    const token = getCookie('@pitang/accessToken');
 
-    const { data } = useSWR('/auth/me', getAuthenticatedUser, {
-        onSuccess: (data) =>
-            dispatch({ payload: data, type: 'SET_LOGGED_USER' }),
-    });
+    const { data } = useSWR(
+        token ? '/auth/me' : null,
+        getAuthenticatedUser,
+        {
+            onSuccess: (data) =>
+                dispatch({ payload: data, type: 'SET_LOGGED_USER' }),
+            revalidateOnFocus: false,
+            shouldRetryOnError: false,
+        },
+    );
 
     return (
         <AppContext.Provider value={[{ ...state, loggedUser: data }, dispatch]}>

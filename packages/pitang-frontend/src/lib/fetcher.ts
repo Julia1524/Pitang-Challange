@@ -1,13 +1,14 @@
 import FetcherError from './FetcherError';
 
-const HOST = 'https://dummyjson.com';
+const HOST = 'http://localhost:3333';
 
 function changeResource(resource: RequestInfo) {
     if (resource.toString().startsWith('http')) {
         return resource;
     }
 
-    return `${HOST}/${resource}`;
+    const path = resource.toString().replace(/^\//, '');
+    return `${HOST}/${path}`;
 }
 
 const fetcher = async <T = any>(
