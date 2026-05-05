@@ -1,3 +1,5 @@
+import path from 'path';
+
 import z from 'zod';
 
 import { prisma } from '../../core/PrismaClient';
@@ -25,6 +27,7 @@ export async function getAttachments(request: Request, response: Response) {
     response.json(attachments);
 }
 
+
 export async function postAttachment(request: Request, response: Response) {
     const id = request.params.id as string;
 
@@ -44,14 +47,13 @@ export async function postAttachment(request: Request, response: Response) {
         return errorResponse(response, 400, 'No file uploaded');
     }
 
-    const fileUrl = `/uploads/${file.filename}`;
-
     const attachment = await prisma.attachment.create({
         data: {
             requestId: id,
             fileName: file.originalname,
-            fileUrl,
+            fileUrl: `/uploads/${file.filename}`,
             fileType: file.mimetype,
+            storedFileName: file.filename,
         },
     });
 
@@ -74,6 +76,20 @@ export async function deleteAttachment(request: Request, response: Response) {
 
     if (!hasAccess) {
         return errorResponse(response, 403, 'You do not have permission to delete this attachment');
+    }
+
+     if (attachment.request.status !== 'DRAFT') {
+        return errorResponse(response, 400, 'You can only edit reimbursement requests in draft status');
+    }
+
+
+    const fs = await import('fs');
+    const filePath = path.join(process.cwd(), 'uploads', attachment.storedFileName);
+
+    try {
+        await fs.promises.unlink(filePath);
+    } catch {
+        // File may not exist, continue with DB deletion
     }
 
     await prisma.attachment.delete({ where: { id: attachmentId } });

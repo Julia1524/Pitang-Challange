@@ -104,6 +104,19 @@ export async function patchCategory(request: Request, response: Response) {
 export async function deleteCategory(request: Request, response: Response) {
     const id = request.params.id as string;
 
+    const existingCategory = await prisma.category.findUnique({
+        where: { id },
+        include: { _count: { select: { requests: true } } },
+    });
+
+    if (!existingCategory) {
+        return errorResponse(response, 404, 'Category not found');
+    }
+
+    if (existingCategory._count.requests > 0) {
+        return errorResponse(response, 400, 'Cannot delete category with existing reimbursement requests');
+    }
+
     await prisma.category.delete({
         where: { id },
     });

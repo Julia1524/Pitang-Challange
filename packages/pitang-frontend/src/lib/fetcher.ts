@@ -1,5 +1,7 @@
 import FetcherError from './FetcherError';
 
+import { getCookie } from '@/hooks/use-auth';
+
 const HOST = 'http://localhost:3333';
 
 function changeResource(resource: RequestInfo) {
@@ -11,15 +13,21 @@ function changeResource(resource: RequestInfo) {
     return `${HOST}/${path}`;
 }
 
+function getToken() {
+    const token = getCookie('@pitang/accessToken');
+    return token ? `Bearer ${token}` : undefined;
+}
+
 const fetcher = async <T = any>(
     resource: RequestInfo,
     options?: RequestInit,
 ): Promise<T> => {
-    // await sleep();
+    const token = getToken();
     const response = await fetch(changeResource(resource), {
         ...options,
         headers: {
             'Content-Type': 'application/json',
+            ...(token ? { Authorization: token } : {}),
             ...options?.headers,
         },
     });

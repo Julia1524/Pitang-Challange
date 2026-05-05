@@ -30,6 +30,7 @@ export function useAuth() {
 
     async function handleLogout() {
         document.cookie = '@pitang/accessToken=; path=/; Max-Age=0';
+        localStorage.removeItem('@pitang/swr');
         mutate('/auth/me', null);
         navigate({ to: '/login' });
     }

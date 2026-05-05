@@ -14,7 +14,7 @@ export async function getReimbursements(request: Request, response: Response) {
         return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
-    const isAdminOrFinance = ['ADMIN', 'FINANCE'].includes(request.loggedUser!.role);
+    const isAdminOrFinance = ['ADMIN', 'FINANCE', 'MANAGER'].includes(request.loggedUser!.role);
 
     const [totalCount, requests] = await Promise.all([
         prisma.request.count(),
@@ -39,6 +39,27 @@ export async function getReimbursements(request: Request, response: Response) {
         page: pagination.page,
         pageSize: pagination.pageSize,
         totalCount,
+    });
+}
+
+export async function getUserReimbursements(request: Request, response: Response) {
+    const userId = request.params.userId as string;
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+        return errorResponse(response, 404, 'User not found');
+    }
+
+    const requests = await prisma.request.findMany({
+        where: { requesterId: userId },
+        include: { category: true },
+        orderBy: { createdAt: 'desc' },
+    });
+
+    response.json({
+        items: requests,
+        totalCount: requests.length,
     });
 }
 

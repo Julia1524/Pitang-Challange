@@ -52,6 +52,81 @@ async function main() {
         prisma.category.create({ data: { name: 'Hospedagem', active: true } }),
         prisma.category.create({ data: { name: 'Material de escritório', active: false } }),
     ]);
+
+    const today = new Date();
+
+    await prisma.request.create({
+        data: {
+            requesterId: employee.id,
+            categoryId: categories[0].id,
+            description: 'Almoço com cliente',
+            value: 150.00,
+            expenseDate: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
+            status: 'SUBMITTED',
+            history: {
+                create: {
+                    userId: employee.id,
+                    action: 'CREATED',
+                    observation: 'Reimbursement request created as draft',
+                },
+            },
+        },
+    });
+
+    await prisma.request.create({
+        data: {
+            requesterId: employee.id,
+            categoryId: categories[1].id,
+            description: 'Uber para aeroporto',
+            value: 85.50,
+            expenseDate: new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000),
+            status: 'APPROVED',
+            history: {
+                create: [
+                    {
+                        userId: employee.id,
+                        action: 'CREATED',
+                        observation: 'Reimbursement request created as draft',
+                    },
+                    {
+                        userId: manager.id,
+                        action: 'APPROVED',
+                        observation: 'Reimbursement request approved by manager',
+                    },
+                ],
+            },
+        },
+    });
+
+    await prisma.request.create({
+        data: {
+            requesterId: manager.id,
+            categoryId: categories[2].id,
+            description: 'Hotel para treinamento',
+            value: 450.00,
+            expenseDate: new Date(today.getTime() - 10 * 24 * 60 * 60 * 1000),
+            status: 'PAID',
+            history: {
+                create: [
+                    {
+                        userId: manager.id,
+                        action: 'CREATED',
+                        observation: 'Reimbursement request created as draft',
+                    },
+                    {
+                        userId: admin.id,
+                        action: 'APPROVED',
+                        observation: 'Reimbursement request approved by admin',
+                    },
+                    {
+                        userId: finance.id,
+                        action: 'PAID',
+                        observation: 'Reimbursement request marked as paid by finance',
+                    },
+                ],
+            },
+        },
+    });
 }
 
 main()

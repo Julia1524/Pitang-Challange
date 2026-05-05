@@ -85,6 +85,7 @@ model Attachment {
   fileName  String
   fileUrl   String
   fileType  String
+  storedFileName String
   createdAt DateTime @default(now())
 
   request Request @relation(fields: [requestId], references: [id], onDelete: Cascade)

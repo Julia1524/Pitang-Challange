@@ -15,6 +15,7 @@ const categoryRouter = express.Router();
 categoryRouter.get('/categories', getCategory);
 categoryRouter.get('/categories/:id', getCategoryById);
 categoryRouter.post('/categories',permissionsMiddleware('ADMIN'),  postCategory);
+categoryRouter.put('/categories/:id', permissionsMiddleware('ADMIN'), patchCategory);
 categoryRouter.patch('/categories/:id', permissionsMiddleware('ADMIN'), patchCategory);
 categoryRouter.delete('/categories/:id', permissionsMiddleware('ADMIN'), deleteCategory); 
 export default categoryRouter;

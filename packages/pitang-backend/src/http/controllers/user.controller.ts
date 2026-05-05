@@ -73,9 +73,19 @@ export async function patchUser(request: Request, response: Response) {
         params: { id },
     } = request;
 
+    const { role, ...allowedFields } = body;
+
+    const isAdmin = request.loggedUser?.role === 'ADMIN';
+
+    if (role && !isAdmin) {
+        return errorResponse(response, 403, 'Only administrators can change user roles');
+    }
+
+    const updateData = isAdmin ? body : allowedFields;
+
     try {
         const user = await prisma.user.update({
-            data: body,
+            data: updateData,
             where: { id: id as string },
         });
 
@@ -86,12 +96,18 @@ export async function patchUser(request: Request, response: Response) {
 }
 
 export async function deleteUser(request: Request, response: Response) {
+    const id = request.params.id as string;
+
     try {
-        await prisma.user.delete({ where: { id: request.params.id as string } });
+        await prisma.$transaction([
+            prisma.history.deleteMany({ where: { userId: id } }),
+            prisma.request.deleteMany({ where: { requesterId: id } }),
+            prisma.user.delete({ where: { id } }),
+        ]);
 
         response.status(204).send();
-    } catch {
-        errorResponse(response, 404, 'User not found');
+    } catch (error: any) {
+        return errorResponse(response, 404, 'User not found');
     }
 }
 
@@ -106,7 +122,7 @@ export async function login(request: Request, response: Response) {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-        return errorResponse(response, 400, 'User not found');
+        return errorResponse(response, 401, 'User not found');
     }
 
     if (bcrypt.compareSync(password, user.password)) {
@@ -114,10 +130,29 @@ export async function login(request: Request, response: Response) {
 
         return response.status(200).json({
             token: jsonwebtoken.sign(user, environment.JWT_SECRET, {
-                expiresIn: '30minutes',
+                expiresIn: '30m',
             }),
         });
     }
 
-    errorResponse(response, 400, 'Invalid password');
+    errorResponse(response, 401, 'Invalid password');
+}
+
+export async function getMe(request: Request, response: Response) {
+    const user = request.loggedUser;
+
+    if (!user) {
+        return errorResponse(response, 401, 'User not authenticated');
+    }
+
+    const dbUser = await prisma.user.findUnique({
+        omit: { password: true },
+        where: { id: user.id },
+    });
+
+    if (!dbUser) {
+        return errorResponse(response, 404, 'User not found');
+    }
+
+    response.json(dbUser);
 }

@@ -16,10 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
-import { Route as DashboardUsersIndexRouteImport } from './routes/dashboard/users/index'
-import { Route as DashboardProfileIndexRouteImport } from './routes/dashboard/profile/index'
 import { Route as DashboardCategoriesIndexRouteImport } from './routes/dashboard/categories/index'
-import { Route as DashboardUsersIdRouteImport } from './routes/dashboard/users/$id'
 import { Route as DashboardReimbursementsNewRouteImport } from './routes/dashboard/reimbursements/new'
 import { Route as DashboardReimbursementsIdRouteImport } from './routes/dashboard/reimbursements/$id'
 import { Route as DashboardReimbursementsEditIdRouteImport } from './routes/dashboard/reimbursements/edit.$id'
@@ -58,27 +55,12 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const DashboardUsersIndexRoute = DashboardUsersIndexRouteImport.update({
-  id: '/users/',
-  path: '/users/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardProfileIndexRoute = DashboardProfileIndexRouteImport.update({
-  id: '/profile/',
-  path: '/profile/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardCategoriesIndexRoute =
   DashboardCategoriesIndexRouteImport.update({
     id: '/categories/',
     path: '/categories/',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
-const DashboardUsersIdRoute = DashboardUsersIdRouteImport.update({
-  id: '/users/$id',
-  path: '/users/$id',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardReimbursementsNewRoute =
   DashboardReimbursementsNewRouteImport.update({
     id: '/reimbursements/new',
@@ -107,10 +89,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/reimbursements/$id': typeof DashboardReimbursementsIdRoute
   '/dashboard/reimbursements/new': typeof DashboardReimbursementsNewRoute
-  '/dashboard/users/$id': typeof DashboardUsersIdRoute
   '/dashboard/categories/': typeof DashboardCategoriesIndexRoute
-  '/dashboard/profile/': typeof DashboardProfileIndexRoute
-  '/dashboard/users/': typeof DashboardUsersIndexRoute
   '/dashboard/reimbursements/edit/$id': typeof DashboardReimbursementsEditIdRoute
 }
 export interface FileRoutesByTo {
@@ -121,10 +100,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/reimbursements/$id': typeof DashboardReimbursementsIdRoute
   '/dashboard/reimbursements/new': typeof DashboardReimbursementsNewRoute
-  '/dashboard/users/$id': typeof DashboardUsersIdRoute
   '/dashboard/categories': typeof DashboardCategoriesIndexRoute
-  '/dashboard/profile': typeof DashboardProfileIndexRoute
-  '/dashboard/users': typeof DashboardUsersIndexRoute
   '/dashboard/reimbursements/edit/$id': typeof DashboardReimbursementsEditIdRoute
 }
 export interface FileRoutesById {
@@ -138,10 +114,7 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/reimbursements/$id': typeof DashboardReimbursementsIdRoute
   '/dashboard/reimbursements/new': typeof DashboardReimbursementsNewRoute
-  '/dashboard/users/$id': typeof DashboardUsersIdRoute
   '/dashboard/categories/': typeof DashboardCategoriesIndexRoute
-  '/dashboard/profile/': typeof DashboardProfileIndexRoute
-  '/dashboard/users/': typeof DashboardUsersIndexRoute
   '/dashboard/reimbursements/edit/$id': typeof DashboardReimbursementsEditIdRoute
 }
 export interface FileRouteTypes {
@@ -155,10 +128,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/reimbursements/$id'
     | '/dashboard/reimbursements/new'
-    | '/dashboard/users/$id'
     | '/dashboard/categories/'
-    | '/dashboard/profile/'
-    | '/dashboard/users/'
     | '/dashboard/reimbursements/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -169,10 +139,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/reimbursements/$id'
     | '/dashboard/reimbursements/new'
-    | '/dashboard/users/$id'
     | '/dashboard/categories'
-    | '/dashboard/profile'
-    | '/dashboard/users'
     | '/dashboard/reimbursements/edit/$id'
   id:
     | '__root__'
@@ -185,10 +152,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/reimbursements/$id'
     | '/dashboard/reimbursements/new'
-    | '/dashboard/users/$id'
     | '/dashboard/categories/'
-    | '/dashboard/profile/'
-    | '/dashboard/users/'
     | '/dashboard/reimbursements/edit/$id'
   fileRoutesById: FileRoutesById
 }
@@ -250,32 +214,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/dashboard/users/': {
-      id: '/dashboard/users/'
-      path: '/users'
-      fullPath: '/dashboard/users/'
-      preLoaderRoute: typeof DashboardUsersIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/profile/': {
-      id: '/dashboard/profile/'
-      path: '/profile'
-      fullPath: '/dashboard/profile/'
-      preLoaderRoute: typeof DashboardProfileIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/dashboard/categories/': {
       id: '/dashboard/categories/'
       path: '/categories'
       fullPath: '/dashboard/categories/'
       preLoaderRoute: typeof DashboardCategoriesIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/users/$id': {
-      id: '/dashboard/users/$id'
-      path: '/users/$id'
-      fullPath: '/dashboard/users/$id'
-      preLoaderRoute: typeof DashboardUsersIdRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/reimbursements/new': {
@@ -320,10 +263,7 @@ interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardReimbursementsIdRoute: typeof DashboardReimbursementsIdRoute
   DashboardReimbursementsNewRoute: typeof DashboardReimbursementsNewRoute
-  DashboardUsersIdRoute: typeof DashboardUsersIdRoute
   DashboardCategoriesIndexRoute: typeof DashboardCategoriesIndexRoute
-  DashboardProfileIndexRoute: typeof DashboardProfileIndexRoute
-  DashboardUsersIndexRoute: typeof DashboardUsersIndexRoute
   DashboardReimbursementsEditIdRoute: typeof DashboardReimbursementsEditIdRoute
 }
 
@@ -331,10 +271,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardReimbursementsIdRoute: DashboardReimbursementsIdRoute,
   DashboardReimbursementsNewRoute: DashboardReimbursementsNewRoute,
-  DashboardUsersIdRoute: DashboardUsersIdRoute,
   DashboardCategoriesIndexRoute: DashboardCategoriesIndexRoute,
-  DashboardProfileIndexRoute: DashboardProfileIndexRoute,
-  DashboardUsersIndexRoute: DashboardUsersIndexRoute,
   DashboardReimbursementsEditIdRoute: DashboardReimbursementsEditIdRoute,
 }
 

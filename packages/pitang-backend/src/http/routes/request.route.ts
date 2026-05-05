@@ -8,6 +8,7 @@ import {
     getRequestById,
     getRequestHistory,
     getReimbursements,
+    getUserReimbursements,
     markAsPaid,
     patchRequest,
     postRequest,
@@ -16,6 +17,7 @@ import {
 } from '../controllers/request.controller';
 import {
     deleteAttachment,
+    downloadAttachment,
     getAttachments,
     postAttachment,
 } from '../controllers/attachment.controller';
@@ -24,6 +26,7 @@ import { isOwnerOrAdmin } from '../middlewares/is-owner-or-admin.middleware';
 const reimbursementRouter = express.Router();
 
 reimbursementRouter.get('/reimbursements', getReimbursements);
+reimbursementRouter.get('/reimbursements/user/:userId', permissionsMiddleware('ADMIN'), getUserReimbursements);
 reimbursementRouter.get('/reimbursements/:id', getRequestById);
 reimbursementRouter.post('/reimbursements', permissionsMiddleware('EMPLOYEE'), postRequest);
 reimbursementRouter.put('/reimbursements/:id', patchRequest);

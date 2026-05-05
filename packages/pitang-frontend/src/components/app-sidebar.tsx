@@ -1,8 +1,10 @@
 import {
-    MapIcon,
-    PackageIcon,
-    PieChartIcon,
+    ListIcon,
+    PlusCircleIcon,
+    SettingsIcon,
     TerminalIcon,
+    UsersIcon,
+    UserIcon,
 } from 'lucide-react';
 import { useContext } from 'react';
 
@@ -21,30 +23,49 @@ import {
 import { AppContext } from '@/context/AppContext';
 import { useAuth } from '@/hooks/use-auth';
 
-const data = {
-    navMain: [],
-    navSecondary: [],
-    projects: [
-        {
-            icon: <PieChartIcon />,
-            name: 'Dashboard',
-            url: '/dashboard',
-        },
-        {
-            icon: <PackageIcon />,
-            name: 'Products',
-            url: '/dashboard/products',
-        },
-        {
-            icon: <MapIcon />,
-            name: 'Users',
-            url: '/dashboard/users',
-        },
-    ],
-};
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { handleLogout } = useAuth();
     const [{ loggedUser }] = useContext(AppContext);
+
+    const role = loggedUser?.role;
+    const isAdmin = role === 'ADMIN';
+    const isManager = role === 'MANAGER';
+    const isFinance = role === 'FINANCE';
+    const isEmployee = role === 'EMPLOYEE';
+
+    const projects = [
+        {
+            icon: <ListIcon />,
+            name: 'Requests',
+            url: '/dashboard',
+        },
+        {
+            icon: <UserIcon />,
+            name: 'My Profile',
+            url: '/dashboard/profile',
+        },
+        ...(isEmployee? [
+                  {
+                      icon: <PlusCircleIcon />,
+                      name: 'New Request',
+                      url: '/dashboard/reimbursements/new',
+                  },
+              ]
+            : []),
+        ...(isAdmin? [
+                  {
+                      icon: <UsersIcon />,
+                      name: 'Users',
+                      url: '/dashboard/users',
+                  },
+                  {
+                      icon: <SettingsIcon />,
+                      name: 'Categories',
+                      url: '/dashboard/categories',
+                  },
+              ]
+            : []),
+    ];
 
     return (
         <Sidebar variant="inset" {...props}>
@@ -57,10 +78,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             </div>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">
-                                    {loggedUser?.company?.name}
+                                    {loggedUser?.name || 'Usuário'}
                                 </span>
                                 <span className="truncate text-xs">
-                                    {loggedUser?.company?.title}
+                                    {role || 'N/A'}
                                 </span>
                             </div>
                         </SidebarMenuButton>
@@ -68,16 +89,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavProjects projects={data.projects} />
-                <NavSecondary className="mt-auto" items={data.navSecondary} />
+                <NavProjects projects={projects} />
+                <NavSecondary className="mt-auto" items={[]} />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser
                     handleLogout={handleLogout}
                     user={{
-                        avatar: loggedUser?.image || '',
+                        avatar: '',
                         email: loggedUser?.email || '',
-                        name: `${loggedUser?.firstName} ${loggedUser?.lastName}`,
+                        name: loggedUser?.name || '',
                     }}
                 />
             </SidebarFooter>
