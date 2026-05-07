@@ -35,7 +35,7 @@ function RouteComponent() {
     const canDeleteAttachment = (userRole === 'ADMIN' || isOwner) && status === 'DRAFT';
 
     const canSubmit = isOwner && status === 'DRAFT';
-    const canEdit = isOwner && status === 'DRAFT';
+    const canEdit = (userRole === 'ADMIN' || isOwner) && status === 'DRAFT';
     const canCancel = isOwner && status === 'DRAFT';
     const canApprove = (userRole === 'MANAGER') && status === 'SUBMITTED';
     const canReject = (userRole === 'MANAGER') && status === 'SUBMITTED';

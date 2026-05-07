@@ -20,7 +20,7 @@ export const registerSchema = z
         email: z.string().email('Invalid email format'),
         password: z.string().min(6, 'Password must be at least 6 characters'),
         confirmPassword: z.string().min(6, 'Password must be at least 6 characters'),
-        role: z.enum(['EMPLOYEE', 'MANAGER', 'FINANCE', 'ADMIN']),
+        role: z.enum(['EMPLOYEE', 'MANAGER', 'FINANCE']),
     })
     .superRefine(({ confirmPassword, password }, ctx) => {
         if (confirmPassword !== password) {

@@ -20,7 +20,6 @@ import {
     getAttachments,
     postAttachment,
 } from '../controllers/attachment.controller';
-import { isOwnerOrAdmin } from '../middlewares/is-owner-or-admin.middleware';
 
 const reimbursementRouter = express.Router();
 
@@ -29,8 +28,8 @@ reimbursementRouter.get('/reimbursements/user/:userId', permissionsMiddleware('A
 reimbursementRouter.get('/reimbursements/:id', getRequestById);
 reimbursementRouter.post('/reimbursements', permissionsMiddleware('EMPLOYEE'), postRequest);
 reimbursementRouter.put('/reimbursements/:id', patchRequest);
-reimbursementRouter.post('/reimbursements/:id/submit', submitRequest);
-reimbursementRouter.post('/reimbursements/:id/cancel', cancelRequest);
+reimbursementRouter.post('/reimbursements/:id/submit',permissionsMiddleware('EMPLOYEE'), submitRequest);
+reimbursementRouter.post('/reimbursements/:id/cancel', permissionsMiddleware('EMPLOYEE'), cancelRequest);
 reimbursementRouter.post('/reimbursements/:id/approve', permissionsMiddleware('MANAGER', 'ADMIN'), approveRequest);
 reimbursementRouter.post('/reimbursements/:id/reject', permissionsMiddleware('MANAGER', 'ADMIN'), rejectRequest);
 reimbursementRouter.post('/reimbursements/:id/pay', permissionsMiddleware('FINANCE', 'ADMIN'), markAsPaid);

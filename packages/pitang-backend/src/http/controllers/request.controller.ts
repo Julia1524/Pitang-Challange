@@ -71,10 +71,10 @@ export async function getRequestById(request: Request, response: Response) {
         return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
-    const hasHistoryAccess = ['ADMIN', 'FINANCE', 'MANAGER'].includes(request.loggedUser!.role) || req.requesterId === request.loggedUser!.id;
+    const canAccess = ['ADMIN', 'MANAGER', 'FINANCE'].includes(request.loggedUser!.role) || req.requesterId === request.loggedUser!.id;
 
-    if (!hasHistoryAccess) {
-        req.history = [];
+    if (!canAccess) {
+        return errorResponse(response, 403, 'You do not have permission to view this request');
     }
 
     response.json(req);
@@ -130,8 +130,10 @@ export async function patchRequest(request: Request, response: Response) {
         return errorResponse(response, 404, 'Reimbursement request not found');
     }
 
-    if (existing.requesterId !== request.loggedUser!.id) {
-        return errorResponse(response, 403, 'You can only edit your own reimbursement requests');
+    const canAccess = ['ADMIN'].includes(request.loggedUser!.role) || existing.requesterId === request.loggedUser!.id;
+
+    if (!canAccess) {
+        return errorResponse(response, 403, 'You do not have permission to edit this request');
     }
 
     if (existing.status !== 'DRAFT') {

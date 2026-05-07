@@ -104,7 +104,6 @@ export function SignupForm({
                         <option value="EMPLOYEE">Employee</option>
                         <option value="MANAGER">Manager</option>
                         <option value="FINANCE">Finance</option>
-                        <option value="ADMIN">Admin</option>
                     </select>
                     {formState.errors.role?.message && (
                         <FieldDescription>
