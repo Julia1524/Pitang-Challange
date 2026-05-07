@@ -1,5 +1,3 @@
-import { mutate } from 'swr';
-import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
 import fetcher from '@/lib/fetcher';
@@ -15,7 +13,6 @@ export function getCookie(cookieName: string) {
 }
 
 export function useAuth() {
-    const navigate = useNavigate();
 
     async function getAuthenticatedUser() {
         const token = getCookie('@pitang/accessToken');
@@ -31,8 +28,7 @@ export function useAuth() {
     async function handleLogout() {
         document.cookie = '@pitang/accessToken=; path=/; Max-Age=0';
         localStorage.removeItem('@pitang/swr');
-        mutate('/auth/me', null);
-        navigate({ to: '/login' });
+        window.location.href = '/login';
     }
 
     async function handleLogin(data: LoginSchema) {
@@ -45,10 +41,8 @@ export function useAuth() {
             toast.success('Welcome...');
 
             document.cookie = `@pitang/accessToken=${response.token}; path=/; Max-Age=86400`;
-            
-            mutate('/auth/me');
 
-            navigate({ to: '/dashboard' });
+            window.location.href = '/dashboard';
         } catch (error) {
             if (error instanceof FetcherError) {
                 toast.error(error.info.message);

@@ -76,12 +76,6 @@ export function NavProjects({
                         </DropdownMenu>
                     </SidebarMenuItem>
                 ))}
-                <SidebarMenuItem>
-                    <SidebarMenuButton>
-                        <MoreHorizontalIcon />
-                        <span>More</span>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
     );

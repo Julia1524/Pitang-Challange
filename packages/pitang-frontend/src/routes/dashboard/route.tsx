@@ -30,9 +30,21 @@ export const Route = createFileRoute('/dashboard')({
 function RouteComponent() {
     const location = useLocation();
 
-    const paths = location.pathname.split('/').filter(Boolean);
+                    const paths = location.pathname.split('/').filter(Boolean);
 
-    return (
+                    const labelMap: Record<string, string> = {
+                        dashboard: 'Dashboard',
+                        reimbursements: 'Requests',
+                        users: 'Users',
+                        categories: 'Categories',
+                        profile: 'Profile',
+                        new: 'New',
+                        edit: 'Edit',
+                    };
+
+                    const filtered = paths.filter(p => labelMap[p] !== undefined);
+
+                    return (
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
@@ -46,16 +58,17 @@ function RouteComponent() {
 
                         <Breadcrumb>
                             <BreadcrumbList>
-                                {paths.map((path, index) => {
-                                    const lastPath = index + 1 === paths.length;
+                                {filtered.map((path, index) => {
+                                    const lastPath = index + 1 === filtered.length;
+                                    const label = labelMap[path] || path;
 
                                     return (
-                                        <Fragment>
+                                        <Fragment key={path}>
                                             <BreadcrumbItem>
                                                 <BreadcrumbPage
                                                     className={`capitalize ${lastPath ? 'font-bold' : ''}`}
                                                 >
-                                                    {path}
+                                                    {label}
                                                 </BreadcrumbPage>
                                             </BreadcrumbItem>
 

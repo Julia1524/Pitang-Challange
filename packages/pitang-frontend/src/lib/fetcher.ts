@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import FetcherError from './FetcherError';
 
 import { getCookie } from '@/hooks/use-auth';
@@ -33,6 +34,16 @@ const fetcher = async <T = any>(
     });
 
     if (!response.ok) {
+        if (response.status === 401) {
+            const url = resource.toString();
+            if (!url.includes('/auth/') && !url.includes('login')) {
+                document.cookie = '@pitang/accessToken=; path=/; Max-Age=0';
+                window.location.href = '/login';
+                toast.error('Session expired. Please login again.');
+                throw new Error('Session expired');
+            }
+        }
+
         const error = new FetcherError(
             'An error occurred while fetching the data.',
         );

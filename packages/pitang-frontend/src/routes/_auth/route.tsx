@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import { GalleryVerticalEnd } from 'lucide-react';
+import { Receipt } from 'lucide-react';
 
 export const Route = createFileRoute('/_auth')({
     component: RouteComponent,
@@ -12,9 +12,9 @@ function RouteComponent() {
                 <div className="flex justify-center gap-2 md:justify-start">
                     <a className="flex items-center gap-2 font-medium" href="#">
                         <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-                            <GalleryVerticalEnd className="size-4" />
+                            <Receipt className="size-4" />
                         </div>
-                        Acme Inc.
+                        Pitang
                     </a>
                 </div>
                 <div className="flex flex-1 items-center justify-center">
@@ -23,12 +23,17 @@ function RouteComponent() {
                     </div>
                 </div>
             </div>
-            <div className="bg-muted relative hidden lg:block">
-                <img
-                    alt="Image"
-                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-                    src="https://ui.shadcn.com/placeholder.svg"
-                />
+            <div className="relative hidden lg:flex items-center justify-center bg-gradient-to-br from-emerald-600 to-cyan-700 p-10">
+                <div className="max-w-md text-center text-white space-y-6">
+                    <div className="mx-auto flex size-20 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+                        <Receipt className="size-10" />
+                    </div>
+                    <h2 className="text-3xl font-bold">Pitang</h2>
+                    <p className="text-white/80 text-lg leading-relaxed">
+                        Manage your reimbursements easily and quickly.
+                        Create requests, track status, and get paid without hassle.
+                    </p>
+                </div>
             </div>
         </div>
     );

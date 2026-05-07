@@ -1,9 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useContext } from 'react';
 import useSWR from 'swr';
 
 import fetcher from '@/lib/fetcher';
 import FetcherError from '@/lib/FetcherError';
 import { formatDate } from '@/lib/date-format';
+import { AppContext } from '@/context/AppContext';
 
 export const Route = createFileRoute('/dashboard/users/')({
     component: RouteComponent,
@@ -12,11 +14,12 @@ export const Route = createFileRoute('/dashboard/users/')({
 function RouteComponent() {
     const { data, isLoading, error } = useSWR('/users', fetcher);
     const navigate = useNavigate();
+    const [{ loggedUser }] = useContext(AppContext);
 
     if (isLoading) return <div className="p-4">Loading...</div>;
     if (error) return <div className="p-4 text-red-500">Error loading users.</div>;
 
-    const users = data ?? [];
+    const users = (data ?? []).filter((u: any) => u.id !== loggedUser?.id);
 
     return (
         <div className="p-4 space-y-4">

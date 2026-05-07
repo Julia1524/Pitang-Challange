@@ -17,7 +17,6 @@ import {
 } from '../controllers/request.controller';
 import {
     deleteAttachment,
-    downloadAttachment,
     getAttachments,
     postAttachment,
 } from '../controllers/attachment.controller';
@@ -32,9 +31,9 @@ reimbursementRouter.post('/reimbursements', permissionsMiddleware('EMPLOYEE'), p
 reimbursementRouter.put('/reimbursements/:id', patchRequest);
 reimbursementRouter.post('/reimbursements/:id/submit', submitRequest);
 reimbursementRouter.post('/reimbursements/:id/cancel', cancelRequest);
-reimbursementRouter.post('/reimbursements/:id/approve', permissionsMiddleware('MANAGER'), approveRequest);
-reimbursementRouter.post('/reimbursements/:id/reject', permissionsMiddleware('MANAGER'), rejectRequest);
-reimbursementRouter.post('/reimbursements/:id/pay', permissionsMiddleware('FINANCE'), markAsPaid);
+reimbursementRouter.post('/reimbursements/:id/approve', permissionsMiddleware('MANAGER', 'ADMIN'), approveRequest);
+reimbursementRouter.post('/reimbursements/:id/reject', permissionsMiddleware('MANAGER', 'ADMIN'), rejectRequest);
+reimbursementRouter.post('/reimbursements/:id/pay', permissionsMiddleware('FINANCE', 'ADMIN'), markAsPaid);
 reimbursementRouter.get('/reimbursements/:id/history', getRequestHistory);
 reimbursementRouter.get('/reimbursements/:id/attachments', getAttachments);
 reimbursementRouter.post('/reimbursements/:id/attachments', permissionsMiddleware('EMPLOYEE'), upload.single('file'), postAttachment);

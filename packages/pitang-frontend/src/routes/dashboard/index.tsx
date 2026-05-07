@@ -12,7 +12,6 @@ interface Reimbursement {
     description: string;
     category: { name: string };
     createdAt: string;
-    requester: { name: string };
 }
 
 export const Route = createFileRoute('/dashboard/')({

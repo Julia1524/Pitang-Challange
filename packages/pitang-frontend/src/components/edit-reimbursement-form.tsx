@@ -78,7 +78,7 @@ export function EditReimbursementForm({ id, className }: { id: string; className
                 </Field>
 
                 <Field>
-                    <FieldLabel>Date</FieldLabel>
+                    <FieldLabel>Expense Date</FieldLabel>
                     <Input type="date" {...register('expenseDate')} />
                     {formState.errors.expenseDate && (
                         <FieldDescription className="text-red-500">

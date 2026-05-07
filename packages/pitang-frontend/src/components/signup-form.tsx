@@ -28,7 +28,7 @@ export function SignupForm({
             confirmPassword: '',
             role: 'EMPLOYEE',
         },
-        mode: 'onBlur',
+        mode: 'onChange',
         resolver: zodResolver(registerSchema),
     });
 
@@ -95,7 +95,7 @@ export function SignupForm({
                 </Field>
 
                 <Field data-invalid={!!formState.errors.role}>
-                    <FieldLabel htmlFor="role">Role</FieldLabel>
+                    <FieldLabel htmlFor="role">Profile</FieldLabel>
                     <select
                         id="role"
                         className="border-input bg-background ring-offset-background focus-visible:ring-ring flex h-9 w-full rounded-md border px-3 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
@@ -104,7 +104,7 @@ export function SignupForm({
                         <option value="EMPLOYEE">Employee</option>
                         <option value="MANAGER">Manager</option>
                         <option value="FINANCE">Finance</option>
-                        <option value="ADMIN">Administrator</option>
+                        <option value="ADMIN">Admin</option>
                     </select>
                     {formState.errors.role?.message && (
                         <FieldDescription>

@@ -14,11 +14,14 @@ export async function getReimbursements(request: Request, response: Response) {
         return errorResponse(response, 400, 'Invalid fields', z.treeifyError(error).properties);
     }
 
-    const isAdminOrFinance = ['ADMIN', 'FINANCE', 'MANAGER'].includes(request.loggedUser!.role);
+    const canSeeAll = ['ADMIN', 'FINANCE', 'MANAGER'].includes(request.loggedUser!.role);
+
+    const where = canSeeAll ? {} : { requesterId: request.loggedUser!.id };
 
     const [totalCount, requests] = await Promise.all([
-        prisma.request.count(),
+        prisma.request.count({ where }),
         prisma.request.findMany({
+            where,
             include: { category: true, attachments: true, history: true },
             orderBy: { id: pagination.sort },
             skip: (pagination.page - 1) * pagination.pageSize,
@@ -26,15 +29,8 @@ export async function getReimbursements(request: Request, response: Response) {
         }),
     ]);
 
-    const filtered = requests.map((req) => {
-        if (!isAdminOrFinance && req.requesterId !== request.loggedUser!.id) {
-            req.history = [];
-        }
-        return req;
-    });
-
     response.json({
-        items: filtered,
+        items: requests,
         lastPage: Math.ceil(totalCount / pagination.pageSize) === pagination.page,
         page: pagination.page,
         pageSize: pagination.pageSize,
@@ -52,7 +48,7 @@ export async function getUserReimbursements(request: Request, response: Response
     }
 
     const requests = await prisma.request.findMany({
-        where: { requesterId: userId },
+        where: { requesterId: userId},
         include: { category: true },
         orderBy: { createdAt: 'desc' },
     });
@@ -68,7 +64,7 @@ export async function getRequestById(request: Request, response: Response) {
 
     const req = await prisma.request.findUnique({
         where: { id },
-        include: { category: true, attachments: true, history: true },
+        include: { category: true, attachments: true, history: { orderBy: { createdAt: 'asc' }, include: { user: { select: { id: true, name: true } } } } },
     });
 
     if (!req) {

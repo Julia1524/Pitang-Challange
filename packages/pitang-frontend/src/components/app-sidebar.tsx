@@ -9,7 +9,6 @@ import {
 import { useContext } from 'react';
 
 import { NavProjects } from '@/components/nav-projects';
-import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
 import {
     Sidebar,
@@ -39,12 +38,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             name: 'Requests',
             url: '/dashboard',
         },
-        {
-            icon: <UserIcon />,
-            name: 'My Profile',
-            url: '/dashboard/profile',
-        },
-        ...(isEmployee? [
+          ...(isEmployee? [
                   {
                       icon: <PlusCircleIcon />,
                       name: 'New Request',
@@ -52,7 +46,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   },
               ]
             : []),
-        ...(isAdmin? [
+         ...(isAdmin? [
                   {
                       icon: <UsersIcon />,
                       name: 'Users',
@@ -65,6 +59,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   },
               ]
             : []),
+        {
+            icon: <UserIcon />,
+            name: 'My Profile',
+            url: '/dashboard/profile',
+        },
     ];
 
     return (
@@ -78,7 +77,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             </div>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">
-                                    {loggedUser?.name || 'Usuário'}
+                                    {loggedUser?.name || 'User'}
                                 </span>
                                 <span className="truncate text-xs">
                                     {role || 'N/A'}
@@ -90,7 +89,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <NavProjects projects={projects} />
-                <NavSecondary className="mt-auto" items={[]} />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser
