@@ -64,11 +64,18 @@ async function main() {
             expenseDate: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
             status: 'SUBMITTED',
             history: {
-                create: {
-                    userId: employee.id,
-                    action: 'CREATED',
-                    observation: 'Reimbursement request created as draft',
-                },
+                create: [
+                    {
+                        userId: employee.id,
+                        action: 'CREATED',
+                        observation: 'Reimbursement request created as draft',
+                    },
+                    {
+                        userId: employee.id,
+                        action: 'SUBMITTED',
+                        observation: 'Reimbursement request submitted for review',
+                    },
+                ],
             },
         },
     });
@@ -89,6 +96,11 @@ async function main() {
                         observation: 'Reimbursement request created as draft',
                     },
                     {
+                        userId: employee.id,
+                        action: 'SUBMITTED',
+                        observation: 'Reimbursement request submitted for review',
+                    },
+                    {
                         userId: manager.id,
                         action: 'APPROVED',
                         observation: 'Reimbursement request approved by manager',
@@ -100,7 +112,7 @@ async function main() {
 
     await prisma.request.create({
         data: {
-            requesterId: manager.id,
+            requesterId: employee.id,
             categoryId: categories[2].id,
             description: 'Hotel para treinamento',
             value: 450.00,
@@ -109,14 +121,19 @@ async function main() {
             history: {
                 create: [
                     {
-                        userId: manager.id,
+                        userId: employee.id,
                         action: 'CREATED',
                         observation: 'Reimbursement request created as draft',
                     },
                     {
-                        userId: admin.id,
+                        userId: employee.id,
+                        action: 'SUBMITTED',
+                        observation: 'Reimbursement request submitted for review',
+                    },
+                    {
+                        userId: manager.id,
                         action: 'APPROVED',
-                        observation: 'Reimbursement request approved by admin',
+                        observation: 'Reimbursement request approved by manager',
                     },
                     {
                         userId: finance.id,

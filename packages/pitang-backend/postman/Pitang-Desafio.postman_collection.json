@@ -56,7 +56,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "CATEGORY-DELETE",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -86,7 +86,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "CATEGORY-PATCH",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -404,6 +404,68 @@
 								"reimbursements",
 								"cmooyf6nm00034texbois7m46",
 								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-DELETE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "cmooyebfb00014texutecp8lr",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/reimbursements/cmooyf6nm00034texbois7m46/reject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements",
+								"cmooyf6nm00034texbois7m46",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REIMBURSEMENTS-USER",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Nome do Usuário\",\n  \"email\": \"email@exemplo.com\",\n  \"password\": \"senha123\",\n  \"role\": \"EMPLOYEE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/reimbursements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"reimbursements"
 							]
 						}
 					},

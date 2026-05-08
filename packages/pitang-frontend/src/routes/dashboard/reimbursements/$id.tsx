@@ -39,6 +39,7 @@ function RouteComponent() {
     const canSubmit = isOwner && status === 'DRAFT';
     const canEdit = (userRole === 'ADMIN' || isOwner) && status === 'DRAFT';
     const canCancel = isOwner && status === 'DRAFT';
+    const canDelete = (userRole === 'ADMIN' || isOwner) && status === 'DRAFT';
     const canApprove = (userRole === 'MANAGER') && status === 'SUBMITTED';
     const canReject = (userRole === 'MANAGER') && status === 'SUBMITTED';
     const canPay = (userRole === 'FINANCE') && status === 'APPROVED';
@@ -48,7 +49,7 @@ function RouteComponent() {
         try {
             await fetcher.post(`/reimbursements/${id}/${action}`, action === 'reject' ? { rejectionJustification: justification } : {});
             toast.success('Action executed successfully!');
-            mutate();
+            await mutate();
         } catch (error) {
             if (error instanceof FetcherError) {
                 toast.error(error.info.message);
@@ -56,6 +57,29 @@ function RouteComponent() {
         } finally {
             setLoadingAction(null);
         }
+    }
+
+    async function handleDelete() {
+        toast('Are you sure you want to delete this request? This action cannot be undone.', {
+            action: {
+                label: 'Yes, delete',
+                onClick: async () => {
+                    setLoadingAction('delete');
+                    try {
+                        await fetcher.delete(`/reimbursements/${id}`);
+                        toast.success('Request deleted!');
+                        navigate({ to: '/dashboard' });
+                    } catch (error) {
+                        if (error instanceof FetcherError) {
+                            toast.error(error.info.message);
+                        }
+                    } finally {
+                        setLoadingAction(null);
+                    }
+                },
+            },
+            cancel: { label: 'No' },
+        });
     }
 
     async function handleUpload(file: File) {
@@ -207,7 +231,7 @@ function RouteComponent() {
                 )}
             </div>
 
-            {(canEdit || canCancel || canSubmit) && (
+            {(canEdit || canCancel || canSubmit || canDelete) && (
                 <div className="bg-amber-500/10 border border-amber-500/25 rounded-xl p-4 flex gap-2 flex-wrap">
                     {canEdit && (
                         <Button variant="secondary" onClick={() => navigate({ to: `/dashboard/reimbursements/edit/${id}` })} disabled={loadingAction !== null}>
@@ -227,6 +251,11 @@ function RouteComponent() {
                             });
                         }} disabled={loadingAction !== null}>
                             Cancel Request
+                        </Button>
+                    )}
+                    {canDelete && (
+                        <Button variant="destructive" onClick={handleDelete} disabled={loadingAction !== null}>
+                            Delete Request
                         </Button>
                     )}
                 </div>

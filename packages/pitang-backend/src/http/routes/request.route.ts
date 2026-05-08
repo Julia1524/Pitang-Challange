@@ -5,6 +5,7 @@ import { upload } from '../middlewares/upload.middleware';
 import {
     approveRequest,
     cancelRequest,
+    deleteRequest,
     getRequestById,
     getRequestHistory,
     getReimbursements,
@@ -33,6 +34,7 @@ reimbursementRouter.post('/reimbursements/:id/cancel', permissionsMiddleware('EM
 reimbursementRouter.post('/reimbursements/:id/approve', permissionsMiddleware('MANAGER', 'ADMIN'), approveRequest);
 reimbursementRouter.post('/reimbursements/:id/reject', permissionsMiddleware('MANAGER', 'ADMIN'), rejectRequest);
 reimbursementRouter.post('/reimbursements/:id/pay', permissionsMiddleware('FINANCE', 'ADMIN'), markAsPaid);
+reimbursementRouter.delete('/reimbursements/:id', deleteRequest);
 reimbursementRouter.get('/reimbursements/:id/history', getRequestHistory);
 reimbursementRouter.get('/reimbursements/:id/attachments', getAttachments);
 reimbursementRouter.post('/reimbursements/:id/attachments', permissionsMiddleware('EMPLOYEE'), upload.single('file'), postAttachment);

@@ -96,6 +96,7 @@ Backend disponível em `http://localhost:3333`.
 | POST   | `/reimbursements/:id/approve`     | Aprovar             | MANAGER, ADMIN                           |
 | POST   | `/reimbursements/:id/reject`      | Rejeitar            | MANAGER, ADMIN                           |
 | POST   | `/reimbursements/:id/pay`         | Pagar               | FINANCE, ADMIN                           |
+| DELETE | `/reimbursements/:id`             | Deletar request     | Dono (DRAFT) ou ADMIN                    |
 | GET    | `/reimbursements/:id/history`     | Histórico           | Dono, MANAGER, FINANCE, ADMIN            |
 | GET    | `/reimbursements/:id/attachments` | Anexos              | Dono, MANAGER, FINANCE, ADMIN            |
 | POST   | `/reimbursements/:id/attachments` | Upload anexo        | Dono (DRAFT)                             |

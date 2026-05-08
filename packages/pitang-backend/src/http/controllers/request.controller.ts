@@ -1,3 +1,4 @@
+import path from 'path';
 import z from 'zod';
 
 import { prisma } from '../../core/PrismaClient';
@@ -22,7 +23,7 @@ export async function getReimbursements(request: Request, response: Response) {
         prisma.request.count({ where }),
         prisma.request.findMany({
             where,
-            include: { category: true, attachments: true, history: true },
+            include: { category: true, attachments: true, history: { orderBy: { createdAt: 'asc' }, include: { user: { select: { id: true, name: true } } } } },
             orderBy: { id: pagination.sort },
             skip: (pagination.page - 1) * pagination.pageSize,
             take: pagination.pageSize,
@@ -49,7 +50,7 @@ export async function getUserReimbursements(request: Request, response: Response
 
     const requests = await prisma.request.findMany({
         where: { requesterId: userId},
-        include: { category: true },
+        include: { category: true, history: { orderBy: { createdAt: 'asc' }, include: { user: { select: { id: true, name: true } } } } },
         orderBy: { createdAt: 'desc' },
     });
 
@@ -346,6 +347,43 @@ export async function cancelRequest(request: Request, response: Response) {
     });
 
     response.json(updated);
+}
+
+export async function deleteRequest(request: Request, response: Response) {
+    const id = request.params.id as string;
+
+    const existing = await prisma.request.findUnique({
+        where: { id },
+        include: { attachments: true },
+    });
+
+    if (!existing) {
+        return errorResponse(response, 404, 'Reimbursement request not found');
+    }
+
+    const canDelete = ['ADMIN'].includes(request.loggedUser!.role) || existing.requesterId === request.loggedUser!.id;
+
+    if (!canDelete) {
+        return errorResponse(response, 403, 'You do not have permission to delete this request');
+    }
+
+    if (existing.status !== 'DRAFT') {
+        return errorResponse(response, 400, 'Only draft requests can be deleted');
+    }
+
+    const fs = await import('fs');
+    for (const att of existing.attachments) {
+        const filePath = path.join(process.cwd(), 'uploads', att.storedFileName);
+        try {
+            await fs.promises.unlink(filePath);
+        } catch {
+            // File may not exist
+        }
+    }
+
+    await prisma.request.delete({ where: { id } });
+
+    response.status(204).send();
 }
 
 export async function getRequestHistory(request: Request, response: Response) {
