@@ -613,7 +613,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "USER-PATCH",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -652,7 +652,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "DELETE-USER",
 			"request": {
 				"auth": {
 					"type": "bearer",
