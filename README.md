@@ -5,7 +5,7 @@ Sistema de gerenciamento de reembolsos com autenticação JWT, controle de permi
 ## Stack
 
 - **Runtime:** [Bun](https://bun.sh) 1.3+
-- **Backend:** Express 5 + Prisma + PostgreSQL + Redis
+- **Backend:** Node.js, Express 5, TypeScript, API RESTful, JWT, middlewares, Zod, Prisma (ORM), PostgreSQL + Redis
 - **Frontend:** React 19 + TanStack Router + SWR + Vite
 - **Testes:** Bun Test (backend) + Vitest (frontend)
 
