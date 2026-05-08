@@ -33,6 +33,9 @@ cd packages/pitang-backend
 
 # Configurar variáveis de ambiente
 cp .env.example .env
+
+# Criar diretórios necessários
+mkdir -p logs uploads
 ```
 
 Edite `.env` com suas credenciais:
@@ -59,6 +62,15 @@ bun run dev
 ```
 
 Backend disponível em `http://localhost:3333`.
+
+### Usuários do seed
+
+| Nome | Email | Senha | Perfil |
+|------|-------|-------|--------|
+| Admin User | admin@pitang.com | 123456 | ADMIN |
+| Manager User | manager@pitang.com | 123456 | MANAGER |
+| Finance User | finance@pitang.com | 123456 | FINANCE |
+| Employee User | employee@pitang.com | 123456 | EMPLOYEE |
 
 ### Rotas principais
 
@@ -131,9 +143,4 @@ bun run prisma:studio
 # Backend - compilar TypeScript
 bun run compile
 
-# Frontend - build produção
-bun run build
-
-# Frontend - preview do build
-bun run preview
 ```
