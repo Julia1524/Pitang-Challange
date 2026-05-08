@@ -85,9 +85,9 @@ function RouteComponent() {
 
     if (isEditing) {
         return (
-            <div className="p-4 space-y-6 max-w-4xl mx-auto">
-                <div className="border p-6 rounded-lg space-y-4">
-                    <h3 className="text-xl font-bold">Edit User</h3>
+            <div className="p-6 space-y-6 max-w-4xl mx-auto">
+                <div className="bg-card border rounded-xl shadow-sm p-6 space-y-4">
+                    <h3 className="text-xl font-bold tracking-tight">Edit User</h3>
 
                     <Field>
                         <FieldLabel>Name</FieldLabel>
@@ -107,7 +107,7 @@ function RouteComponent() {
 
                     <Field>
                         <FieldLabel>Role</FieldLabel>
-                        <select className="w-full p-2 border rounded" value={role} onChange={(e) => setRole(e.target.value)}>
+                        <select className="w-full bg-background border rounded-lg px-3 py-2 text-sm" value={role} onChange={(e) => setRole(e.target.value)}>
                             {roles.map((r) => (
                                 <option key={r} value={r}>
                                     {r}
@@ -133,18 +133,18 @@ function RouteComponent() {
     }
 
     return (
-        <div className="p-4 space-y-6 max-w-4xl mx-auto">
-            <div className="border p-6 rounded-lg space-y-4">
+        <div className="p-6 space-y-6 max-w-4xl mx-auto">
+            <div className="bg-card border rounded-xl shadow-sm p-6 space-y-4">
                 <div className="flex justify-between items-start">
                     <div>
-                        <h2 className="text-2xl font-bold">{user.name}</h2>
+                        <h2 className="text-2xl font-bold tracking-tight">{user.name}</h2>
                         <p className="text-muted-foreground">{user.email}</p>
                     </div>
-                    <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold">
+                    <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold border border-primary/20">
                         {user.role}
                     </span>
                 </div>
-                <p><strong>Created:</strong> {formatDate(user.createdAt, 'full')}</p>
+                <p className="text-sm text-muted-foreground"><strong className="text-foreground">Created:</strong> {formatDate(user.createdAt, 'full')}</p>
 
                 <div className="flex gap-2 pt-2">
                     <Button onClick={startEditing}>Edit User</Button>
@@ -153,40 +153,40 @@ function RouteComponent() {
             </div>
 
             <div className="space-y-4">
-                <h3 className="text-xl font-bold">Reimbursement Requests ({requests.length})</h3>
+                <h3 className="text-xl font-bold tracking-tight">Reimbursement Requests ({requests.length})</h3>
 
                 {requests.length === 0 ? (
-                    <div className="text-muted-foreground p-8 text-center border rounded-lg">
-                        No requests from this user.
+                    <div className="flex flex-col items-center justify-center p-12 text-muted-foreground border-2 border-dashed rounded-xl">
+                        <p className="text-lg font-medium">No requests from this user.</p>
                     </div>
                 ) : (
-                    <div className="border rounded-lg overflow-hidden">
+                    <div className="border rounded-xl overflow-hidden shadow-sm">
                         <table className="w-full text-sm">
-                            <thead className="bg-muted">
-                                <tr>
-                                    <th className="p-3 text-left">Description</th>
-                                    <th className="p-3 text-left">Category</th>
-                                    <th className="p-3 text-left">Value</th>
-                                    <th className="p-3 text-left">Status</th>
-                                    <th className="p-3 text-left">Date</th>
+                            <thead>
+                                <tr className="bg-muted/50 border-b">
+                                    <th className="p-3.5 text-left font-semibold text-muted-foreground">Description</th>
+                                    <th className="p-3.5 text-left font-semibold text-muted-foreground">Category</th>
+                                    <th className="p-3.5 text-left font-semibold text-muted-foreground">Value</th>
+                                    <th className="p-3.5 text-left font-semibold text-muted-foreground">Status</th>
+                                    <th className="p-3.5 text-left font-semibold text-muted-foreground">Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {requests.map((req: any) => (
                                     <tr
                                         key={req.id}
-                                        className="border-t cursor-pointer hover:bg-muted/50 transition-colors"
+                                        className="border-b last:border-0 cursor-pointer hover:bg-muted/30 transition-colors"
                                         onClick={() => navigate({ to: `/dashboard/reimbursements/${req.id}` })}
                                     >
-                                        <td className="p-3">{req.description}</td>
-                                        <td className="p-3">{req.category?.name}</td>
-                                        <td className="p-3">{formatCurrency(req.value)}</td>
-                                        <td className="p-3">
-                                            <span className="px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                        <td className="p-3.5 font-medium">{req.description}</td>
+                                        <td className="p-3.5 text-muted-foreground">{req.category?.name}</td>
+                                        <td className="p-3.5 font-medium">{formatCurrency(req.value)}</td>
+                                        <td className="p-3.5">
+                                            <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
                                                 {req.status}
                                             </span>
                                         </td>
-                                        <td className="p-3">{formatDate(req.createdAt)}</td>
+                                        <td className="p-3.5 text-muted-foreground">{formatDate(req.createdAt)}</td>
                                     </tr>
                                 ))}
                             </tbody>

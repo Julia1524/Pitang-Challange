@@ -86,13 +86,13 @@ function RouteComponent() {
         });
     }
 
-    if (error) return <div className="p-4 text-red-500">Error loading categories.</div>;
+    if (error) return <div className="p-6 text-red-500">Error loading categories.</div>;
 
     return (
-        <div className="p-4 max-w-3xl mx-auto space-y-6">
-            <h2 className="text-2xl font-bold">Categories Management</h2>
+        <div className="p-6 max-w-3xl mx-auto space-y-6">
+            <h2 className="text-2xl font-bold tracking-tight">Categories</h2>
 
-            <div className="border p-4 rounded-lg space-y-2 bg-muted/20">
+            <div className="bg-card border rounded-xl shadow-sm p-5 space-y-3">
                 <Field>
                     <FieldLabel>New Category</FieldLabel>
                     <div className="flex gap-2">
@@ -102,45 +102,45 @@ function RouteComponent() {
                 </Field>
             </div>
 
-            <div className="border rounded-lg overflow-hidden">
+            <div className="border rounded-xl overflow-hidden shadow-sm">
                 <table className="w-full text-sm">
-                    <thead className="bg-muted">
-                        <tr>
-                            <th className="p-3 text-left">Name</th>
-                            <th className="p-3 text-center">Status</th>
-                            <th className="p-3 text-center">Created</th>
-                            <th className="p-3 text-right">Actions</th>
+                    <thead>
+                        <tr className="bg-muted/50 border-b">
+                            <th className="p-3.5 text-left font-semibold text-muted-foreground">Name</th>
+                            <th className="p-3.5 text-center font-semibold text-muted-foreground">Status</th>
+                            <th className="p-3.5 text-center font-semibold text-muted-foreground">Created</th>
+                            <th className="p-3.5 text-right font-semibold text-muted-foreground">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {categories.map((cat: any) => (
-                            <tr key={cat.id} className="border-t">
+                            <tr key={cat.id} className="border-b last:border-0 hover:bg-muted/20 transition-colors">
                                 {editingId === cat.id ? (
                                     <>
-                                        <td className="p-3">
+                                        <td className="p-3.5">
                                             <Input value={editName} onChange={(e) => setEditName(e.target.value)} />
                                         </td>
-                                        <td className="p-3 text-center">
-                                            <span className={`px-2 py-1 rounded text-xs font-bold ${cat.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                        <td className="p-3.5 text-center">
+                                            <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${cat.active ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-red-100 text-red-700 border border-red-200'}`}>
                                                 {cat.active ? 'Active' : 'Inactive'}
                                             </span>
                                         </td>
-                                        <td className="p-3 text-center">{formatDate(cat.createdAt)}</td>
-                                        <td className="p-3 text-right space-x-1">
+                                        <td className="p-3.5 text-center text-muted-foreground">{formatDate(cat.createdAt)}</td>
+                                        <td className="p-3.5 text-right space-x-1">
                                             <Button size="sm" onClick={() => saveEdit(cat.id)} disabled={!editName.trim()}>Save</Button>
                                             <Button size="sm" variant="outline" onClick={() => setEditingId(null)}>Cancel</Button>
                                         </td>
                                     </>
                                 ) : (
                                     <>
-                                        <td className="p-3">{cat.name}</td>
-                                        <td className="p-3 text-center">
-                                            <span className={`px-2 py-1 rounded text-xs font-bold ${cat.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                        <td className="p-3.5 font-medium">{cat.name}</td>
+                                        <td className="p-3.5 text-center">
+                                            <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${cat.active ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-red-100 text-red-700 border border-red-200'}`}>
                                                 {cat.active ? 'Active' : 'Inactive'}
                                             </span>
                                         </td>
-                                        <td className="p-3 text-center">{formatDate(cat.createdAt)}</td>
-                                        <td className="p-3 text-right space-x-1">
+                                        <td className="p-3.5 text-center text-muted-foreground">{formatDate(cat.createdAt)}</td>
+                                        <td className="p-3.5 text-right space-x-1">
                                             <Button size="sm" variant="outline" onClick={() => startEdit(cat)}>Edit</Button>
                                             <Button size="sm" variant="outline" onClick={() => toggleStatus(cat)}>
                                                 {cat.active ? 'Deactivate' : 'Activate'}
@@ -153,6 +153,9 @@ function RouteComponent() {
                         ))}
                     </tbody>
                 </table>
+                <div className="px-3.5 py-2.5 text-xs text-muted-foreground border-t bg-muted/20">
+                    {categories.length} categor{categories.length !== 1 ? 'ies' : 'y'}
+                </div>
             </div>
         </div>
     );

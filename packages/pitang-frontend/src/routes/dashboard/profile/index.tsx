@@ -68,9 +68,9 @@ function RouteComponent() {
     }
 
     return (
-        <div className="p-4 space-y-6 max-w-2xl mx-auto">
-            <div className="border p-6 rounded-lg space-y-4">
-                <h2 className="text-2xl font-bold">My Profile</h2>
+        <div className="p-6 space-y-6 max-w-2xl mx-auto">
+            <div className="bg-card border rounded-xl shadow-sm p-6 space-y-4">
+                <h2 className="text-2xl font-bold tracking-tight">My Profile</h2>
 
                 <Field>
                     <FieldLabel>Name</FieldLabel>
@@ -104,8 +104,8 @@ function RouteComponent() {
                 </div>
             </div>
 
-            <div className="border p-6 rounded-lg space-y-4 border-red-200 bg-red-50">
-                <h3 className="text-lg font-bold text-red-700">Danger Zone</h3>
+            <div className="border p-6 rounded-xl space-y-4 border-red-500/30 bg-red-500/5">
+                <h3 className="text-lg font-bold text-red-400">Danger Zone</h3>
                 <p className="text-sm text-muted-foreground">
                     Once you delete your account, all your requests and data will be permanently removed.
                 </p>

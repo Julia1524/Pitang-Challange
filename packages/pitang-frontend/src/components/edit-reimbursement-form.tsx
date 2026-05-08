@@ -54,9 +54,9 @@ export function EditReimbursementForm({ id, className }: { id: string; className
     const categoriesList = categories?.items ?? [];
 
     return (
-        <div className={`p-4 max-w-2xl mx-auto space-y-6 ${className || ''}`}>
-            <h2 className="text-2xl font-bold">Edit Request</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className={`p-6 max-w-2xl mx-auto space-y-6 ${className || ''}`}>
+            <h2 className="text-2xl font-bold tracking-tight">Edit Request</h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-card border rounded-xl shadow-sm p-6 space-y-4">
                 <Field>
                     <FieldLabel>Description</FieldLabel>
                     <Input {...register('description')} />
@@ -79,7 +79,7 @@ export function EditReimbursementForm({ id, className }: { id: string; className
 
                 <Field>
                     <FieldLabel>Expense Date</FieldLabel>
-                    <Input type="date" {...register('expenseDate')} />
+                    <Input type="date" max={new Date().toISOString().split('T')[0]} {...register('expenseDate')} />
                     {formState.errors.expenseDate && (
                         <FieldDescription className="text-red-500">
                             {formState.errors.expenseDate.message}
@@ -89,7 +89,7 @@ export function EditReimbursementForm({ id, className }: { id: string; className
 
                 <Field>
                     <FieldLabel>Category</FieldLabel>
-                    <select className="w-full p-2 border rounded" {...register('categoryId')}>
+                    <select className="w-full bg-background border rounded-lg px-3 py-2 text-sm" {...register('categoryId')}>
                         <option value="">Select...</option>
                         {categoriesList
                             .filter((c: any) => c.active)

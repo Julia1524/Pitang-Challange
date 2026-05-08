@@ -1,8 +1,10 @@
 import { createFileRoute, useNavigate, useParams } from '@tanstack/react-router';
+import { ArrowLeft, Paperclip, HistoryIcon } from 'lucide-react';
 import { useContext, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { toast } from 'sonner';
 
+import StatusBadge from '@/components/status-badge';
 import { Button } from '@/components/ui/button';
 import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
@@ -105,26 +107,47 @@ function RouteComponent() {
     }
 
     return (
-        <div className="p-4 space-y-6 max-w-4xl mx-auto">
-            <div className="border p-6 rounded-lg space-y-4">
-                <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">Request Details</h2>
-                    <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold">
-                        {status}
-                    </span>
+        <div className="p-6 space-y-6 max-w-4xl mx-auto">
+            <Button variant="ghost" size="sm" onClick={() => navigate({ to: '/dashboard' })} className="-ml-2">
+                <ArrowLeft className="size-4 mr-1" />
+                Back
+            </Button>
+
+            <div className="bg-card border rounded-xl shadow-sm p-6 space-y-4">
+                <div className="flex justify-between items-start">
+                    <h2 className="text-2xl font-bold tracking-tight">Request Details</h2>
+                    <StatusBadge status={status} />
                 </div>
-                <p><strong>Description:</strong> {description}</p>
-                <p><strong>Value:</strong> {formatCurrency(value)}</p>
-                <p><strong>Category:</strong> {category?.name}</p>
-                <p><strong>Date:</strong> {formatDate(createdAt)}</p>
+                <div className="grid sm:grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">Description</p>
+                        <p>{description}</p>
+                    </div>
+                    <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">Value</p>
+                        <p className="text-lg font-semibold">{formatCurrency(value)}</p>
+                    </div>
+                    <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">Category</p>
+                        <p>{category?.name}</p>
+                    </div>
+                    <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">Date</p>
+                        <p>{formatDate(createdAt)}</p>
+                    </div>
+                </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="bg-card border rounded-xl shadow-sm p-6 space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-bold">Attachments</h3>
+                    <h3 className="text-lg font-bold flex items-center gap-2">
+                        <Paperclip className="size-4" />
+                        Attachments
+                    </h3>
                     {canUpload && (
                         <>
                             <Button
+                                size="sm"
                                 disabled={uploadingFile}
                                 onClick={() => fileInputRef.current?.click()}
                             >
@@ -146,38 +169,32 @@ function RouteComponent() {
                 </div>
 
                 {attachments?.length === 0 ? (
-                    <p className="p-4 text-muted-foreground text-sm border rounded-lg">No attachments.</p>
+                    <p className="py-8 text-center text-muted-foreground text-sm border-2 border-dashed rounded-lg">
+                        No attachments yet.
+                    </p>
                 ) : (
                     <div className="border rounded-lg overflow-hidden">
                         <table className="w-full text-sm">
-                            <thead className="bg-muted">
+                            <thead className="bg-muted/50">
                                 <tr>
-                                    <th className="p-3 text-left">File</th>
-                                    <th className="p-3 text-left">Type</th>
-                                    <th className="p-3 text-left">Date</th>
-                                    <th className="p-3 text-right">Actions</th>
+                                    <th className="p-3 text-left font-semibold text-muted-foreground">File</th>
+                                    <th className="p-3 text-left font-semibold text-muted-foreground">Type</th>
+                                    <th className="p-3 text-left font-semibold text-muted-foreground">Date</th>
+                                    <th className="p-3 text-right font-semibold text-muted-foreground">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {attachments?.map((att: any) => (
-                                    <tr key={att.id} className="border-t">
-                                        <td className="p-3">{att.fileName}</td>
+                                    <tr key={att.id} className="border-t last:border-0 hover:bg-muted/20 transition-colors">
+                                        <td className="p-3 font-medium">{att.fileName}</td>
                                         <td className="p-3 text-muted-foreground">{att.fileType}</td>
-                                        <td className="p-3">{formatDate(att.createdAt, 'full')}</td>
+                                        <td className="p-3 text-muted-foreground">{formatDate(att.createdAt, 'full')}</td>
                                         <td className="p-3 text-right space-x-2">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => window.open(`http://localhost:3333${att.fileUrl}`, '_blank')}
-                                            >
+                                            <Button variant="outline" size="sm" onClick={() => window.open(`http://localhost:3333${att.fileUrl}`, '_blank')}>
                                                 View
                                             </Button>
                                             {canDeleteAttachment && (
-                                                <Button
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    onClick={() => handleDeleteAttachment(att.id)}
-                                                >
+                                                <Button variant="destructive" size="sm" onClick={() => handleDeleteAttachment(att.id)}>
                                                     Delete
                                                 </Button>
                                             )}
@@ -191,7 +208,7 @@ function RouteComponent() {
             </div>
 
             {(canEdit || canCancel || canSubmit) && (
-                <div className="border p-4 rounded-lg bg-yellow-50 flex gap-2 flex-wrap">
+                <div className="bg-amber-500/10 border border-amber-500/25 rounded-xl p-4 flex gap-2 flex-wrap">
                     {canEdit && (
                         <Button variant="secondary" onClick={() => navigate({ to: `/dashboard/reimbursements/edit/${id}` })} disabled={loadingAction !== null}>
                             Edit
@@ -205,13 +222,8 @@ function RouteComponent() {
                     {canCancel && (
                         <Button variant="destructive" onClick={async () => {
                             toast('Are you sure you want to cancel this request?', {
-                                action: {
-                                    label: 'Yes, cancel',
-                                    onClick: () => doAction('cancel'),
-                                },
-                                cancel: {
-                                    label: 'No',
-                                },
+                                action: { label: 'Yes, cancel', onClick: () => doAction('cancel') },
+                                cancel: { label: 'No' },
                             });
                         }} disabled={loadingAction !== null}>
                             Cancel Request
@@ -221,7 +233,7 @@ function RouteComponent() {
             )}
 
             {canPay && (
-                <div className="border p-4 rounded-lg bg-green-50 space-x-2">
+                <div className="bg-emerald-500/10 border border-emerald-500/25 rounded-xl p-4">
                     <Button onClick={() => doAction('pay')} disabled={loadingAction !== null}>
                         Mark as Paid
                     </Button>
@@ -229,7 +241,7 @@ function RouteComponent() {
             )}
 
             {canApprove && (
-                <div className="border p-4 rounded-lg bg-blue-50 space-x-2">
+                <div className="bg-blue-500/10 border border-blue-500/25 rounded-xl p-4">
                     <Button onClick={() => doAction('approve')} disabled={loadingAction !== null}>
                         Approve
                     </Button>
@@ -237,7 +249,7 @@ function RouteComponent() {
             )}
 
             {canReject && (
-                <div className="border p-4 rounded-lg bg-red-50 space-y-2">
+                <div className="bg-red-500/10 border border-red-500/25 rounded-xl p-4 space-y-3">
                     <Field>
                         <FieldLabel>Rejection Justification</FieldLabel>
                         <Input value={justification} onChange={(e) => setJustification(e.target.value)} />
@@ -248,27 +260,30 @@ function RouteComponent() {
                 </div>
             )}
 
-            <div className="space-y-2">
-                <h3 className="text-xl font-bold">History</h3>
+            <div className="bg-card border rounded-xl shadow-sm p-6 space-y-4">
+                <h3 className="text-lg font-bold flex items-center gap-2">
+                    <HistoryIcon className="size-4" />
+                    History
+                </h3>
                 <div className="border rounded-lg overflow-hidden">
                     {history.length === 0 ? (
-                        <p className="p-4 text-muted-foreground">No history available.</p>
+                        <p className="p-4 text-center text-muted-foreground">No history available.</p>
                     ) : (
                         <table className="w-full text-sm">
-                            <thead className="bg-muted">
+                            <thead className="bg-muted/50">
                                 <tr>
-                                    <th className="p-3 text-left">Action</th>
-                                    <th className="p-3 text-left">User</th>
-                                    <th className="p-3 text-left">Date</th>
-                                    <th className="p-3 text-left">Obs</th>
+                                    <th className="p-3 text-left font-semibold text-muted-foreground">Action</th>
+                                    <th className="p-3 text-left font-semibold text-muted-foreground">User</th>
+                                    <th className="p-3 text-left font-semibold text-muted-foreground">Date</th>
+                                    <th className="p-3 text-left font-semibold text-muted-foreground">Obs</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {history.map((h: any) => (
-                                    <tr key={h.id} className="border-t">
-                                        <td className="p-3 font-medium">{h.action}</td>
-                                        <td className="p-3">{h.user?.name}</td>
-                                        <td className="p-3">{formatDate(h.createdAt, 'full')}</td>
+                                    <tr key={h.id} className="border-t last:border-0 hover:bg-muted/20 transition-colors">
+                                        <td className="p-3"><StatusBadge status={h.action} /></td>
+                                        <td className="p-3 font-medium">{h.user?.name}</td>
+                                        <td className="p-3 text-muted-foreground">{formatDate(h.createdAt, 'full')}</td>
                                         <td className="p-3 text-muted-foreground">{h.observation || '-'}</td>
                                     </tr>
                                 ))}
